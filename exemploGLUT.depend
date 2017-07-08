@@ -1,0 +1,42 @@
+# depslib dependency file v1.0
+1409533280 source:f:\pratica\main.cpp
+	<stdio.h>
+	<stdlib.h>
+	<GL/gl.h>
+	<GL/glut.h>
+	<cmath>
+
+1307916834 f:\pratica\include\gl\glut.h
+	"freeglut.h"
+
+1307916834 f:\pratica\include\gl\freeglut.h
+	"freeglut_std.h"
+	"freeglut_ext.h"
+
+1307916834 f:\pratica\include\gl\freeglut_std.h
+	<windows.h>
+	<GL/gl.h>
+	<GL/glu.h>
+
+1307916834 f:\pratica\include\gl\freeglut_ext.h
+
+1499197122 source:g:\ufop 2017-01\computa«√o gr¡fica\pr¡tica 4\aula 4-win\main.cpp
+	<GL/gl.h>
+	<GL/glut.h>
+	<stdlib.h>
+	<cmath>
+
+1307913234 g:\ufop 2017-01\computa«√o gr¡fica\pr¡tica 4\aula 4-win\include\gl\glut.h
+	"freeglut.h"
+
+1307913234 g:\ufop 2017-01\computa«√o gr¡fica\pr¡tica 4\aula 4-win\include\gl\freeglut.h
+	"freeglut_std.h"
+	"freeglut_ext.h"
+
+1307913234 g:\ufop 2017-01\computa«√o gr¡fica\pr¡tica 4\aula 4-win\include\gl\freeglut_std.h
+	<windows.h>
+	<GL/gl.h>
+	<GL/glu.h>
+
+1307913234 g:\ufop 2017-01\computa«√o gr¡fica\pr¡tica 4\aula 4-win\include\gl\freeglut_ext.h
+

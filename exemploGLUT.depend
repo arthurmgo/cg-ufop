@@ -40,3 +40,23 @@
 
 1307913234 g:\ufop 2017-01\computa«√o gr¡fica\pr¡tica 4\aula 4-win\include\gl\freeglut_ext.h
 
+1499553403 source:c:\users\arthu\documents\github\cg-ufop\main.cpp
+	<GL/gl.h>
+	<GL/glut.h>
+	<stdlib.h>
+	<cmath>
+
+1307916834 c:\users\arthu\documents\github\cg-ufop\include\gl\glut.h
+	"freeglut.h"
+
+1307916834 c:\users\arthu\documents\github\cg-ufop\include\gl\freeglut.h
+	"freeglut_std.h"
+	"freeglut_ext.h"
+
+1307916834 c:\users\arthu\documents\github\cg-ufop\include\gl\freeglut_std.h
+	<windows.h>
+	<GL/gl.h>
+	<GL/glu.h>
+
+1307916834 c:\users\arthu\documents\github\cg-ufop\include\gl\freeglut_ext.h
+

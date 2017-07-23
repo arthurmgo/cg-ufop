@@ -367,9 +367,6 @@ void TerrenoBase()
     glPopMatrix();
 }
 
-
-<<<<<<< HEAD
-=======
 void Trajetoria(void){
     float raio = 2.0*cos((rodarVert*M_PI)/180.0);
     float tempo = 0.0;
@@ -381,12 +378,12 @@ void Trajetoria(void){
     float y0 = y;
     float z0 = z;
     glColor3f(0.5, 1.0,0.5);
-    glBegin(GL_LINE);
+    glBegin(GL_LINE_STRIP);
     printf("INICIO\n");
     do{
         x =    x0  + forca*x0*tempo;
         y =    y0  + forca*sin((rodarVert*M_PI)/180.0)*tempo - 0.5*G*tempo*tempo;
-        z =    z0  + forca*tiro.z0*tempo;
+        z =    z0  + forca*z0*tempo;
         glVertex3f(x,y,z);
         printf("%f - %f - %f\n", x,y,z);
         tempo += 0.01;
@@ -398,7 +395,6 @@ void Trajetoria(void){
 }
 
 
->>>>>>> 35347661e30c2cc3578392bee4be81683e6ed973
 void Desenha(void)
 {
     glClearColor (1.0, 1.0, 1.0, 0.0);
@@ -449,11 +445,6 @@ void AlteraTamanhoJanela (int w, int h)
     gluLookAt(0,1,13, 0,4,0, 0,1,0); // Especifica posição do observador e do alvo
 }
 
-
-<<<<<<< HEAD
-=======
-
->>>>>>> 35347661e30c2cc3578392bee4be81683e6ed973
 void Teclado(unsigned char key, int x, int y)
 {
     if (key == 'a')

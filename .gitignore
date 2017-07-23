@@ -32,3 +32,4 @@
 *.app
 *.exe
 *.o
+*.depend

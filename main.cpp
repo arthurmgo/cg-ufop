@@ -368,6 +368,37 @@ void TerrenoBase()
 }
 
 
+<<<<<<< HEAD
+=======
+void Trajetoria(void){
+    float raio = 2.0*cos((rodarVert*M_PI)/180.0);
+    float tempo = 0.0;
+    float y = 2.0*sin((rodarVert*M_PI)/180.0);
+    float x = -1.0*raio*sin((rodarHori*M_PI)/180.0);
+    float z = -1.0*raio*cos((rodarHori*M_PI)/180.0);
+     y = y+2;
+    float x0 = x;
+    float y0 = y;
+    float z0 = z;
+    glColor3f(0.5, 1.0,0.5);
+    glBegin(GL_LINE);
+    printf("INICIO\n");
+    do{
+        x =    x0  + forca*x0*tempo;
+        y =    y0  + forca*sin((rodarVert*M_PI)/180.0)*tempo - 0.5*G*tempo*tempo;
+        z =    z0  + forca*tiro.z0*tempo;
+        glVertex3f(x,y,z);
+        printf("%f - %f - %f\n", x,y,z);
+        tempo += 0.01;
+    }while(y > 0);
+    printf("FIM\n");
+    glEnd();
+
+
+}
+
+
+>>>>>>> 35347661e30c2cc3578392bee4be81683e6ed973
 void Desenha(void)
 {
     glClearColor (1.0, 1.0, 1.0, 0.0);
@@ -385,10 +416,9 @@ void Desenha(void)
     glRotated(rodarHori, 0.0, 1.0, 0.0);
     glRotated(rodarVert, 1.0, 0.0, 0.0);
     Canon();
-
-
     glPopMatrix();
 
+    Trajetoria();
 
     glColor3f(0.0, 0.0,0.0);
     if(tiro.vis)
@@ -420,6 +450,10 @@ void AlteraTamanhoJanela (int w, int h)
 }
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 35347661e30c2cc3578392bee4be81683e6ed973
 void Teclado(unsigned char key, int x, int y)
 {
     if (key == 'a')
@@ -446,16 +480,23 @@ void Teclado(unsigned char key, int x, int y)
     {
         tiro.vis = true;
         tiro.tempo = 0.0;
-        tiro.y = 2.0*sin((rodarVert*M_PI)/180.0);
+
         float raio = 2.0*cos((rodarVert*M_PI)/180.0);
+
+        tiro.y = 2.0*sin((rodarVert*M_PI)/180.0);
         tiro.x = -1.0*raio*sin((rodarHori*M_PI)/180.0);
         tiro.z = -1.0*raio*cos((rodarHori*M_PI)/180.0);
+
         float norma = sqrt(tiro.x*tiro.x + tiro.y*tiro.y + tiro.z*tiro.z);
+
         tiro.forcax = tiro.x/norma;
         tiro.forcay = tiro.y/norma;
         tiro.forcaz = tiro.z/norma;
+
         tiro.y = tiro.y + 2.0;
+
         tiro.vel = forca;
+
         tiro.x0 = tiro.x;
         tiro.y0 = tiro.y;
         tiro.z0 = tiro.z;

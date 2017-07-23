@@ -416,7 +416,7 @@ void Teclado(unsigned char key, int x, int y)
 
 }
 
-void Timer(int value)
+void Timer(int value)//teste
 {
     if(tiro.vis){
          if(tiro.y > 0.2){

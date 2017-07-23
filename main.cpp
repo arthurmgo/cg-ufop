@@ -302,11 +302,33 @@ void DivisaoCampo()
 }
 
 
+void Alvo()
+{
+    glPushMatrix();
+
+   // std::cout << d_z << std::endl;
+    //random_variable = rand();
+    //double d_x = 0.0;
+
+    glTranslated(0.0, 0.0, -25.0);
+
+    glColor3f(0.0, 1.0, 1.0);
+
+    glScaled(2.0, 4.0, 2.0);
+
+    glutSolidCube(1);
+
+    glPopMatrix();
+
+}
+
 void TerrenoBase()
 {
     glPushMatrix();
 
     DivisaoCampo();
+
+    Alvo();
 
     glColor3f(1.0, 0.0,0.0);
     glScaled(1.0, 4.0, 1.0);

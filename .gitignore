@@ -33,3 +33,5 @@
 *.exe
 *.o
 *.depend
+*.exe
+*.depend

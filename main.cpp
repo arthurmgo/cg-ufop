@@ -1,13 +1,17 @@
 #include <GL/gl.h>
+#include <stdio.h>
 #include <GL/glut.h>
 #include <stdlib.h>
 #include <cmath>
+#include <iostream>
 
+#define G 9.8
 GLfloat angle = 60, fAspect;
 int rodar = 0.0;
 int rodarApa = 0.0;
 float rodarHaste = 0.0;
 float soma = 0.2;
+
 
 int rodarHori = 0;
 int rodarVert = 0;
@@ -17,10 +21,15 @@ typedef struct
     float x;
     float y;
     float z;
+    float x0;
+    float y0;
+    float z0;
     bool vis;
     float forcax;
     float forcay;
     float forcaz;
+    float tempo;
+    float vel;
 
 } Bola;
 
@@ -56,36 +65,258 @@ void Canon()
     glPopMatrix();
 
 }
+void DivisaoCampo()
+{
+    glPushMatrix();
+    glTranslated(0.0, 0.0, -50.0); //-50
+
+        glColor3f(0.5, 0.5, 0.5);
+        glBegin(GL_QUADS);
+            glVertex3f(50.0,0.0,5.0);
+            glVertex3f(50.0,0.0,0.0);
+            glVertex3f(-50.0,0.0,0.0);
+            glVertex3f(-50.0,0.0,5.0);
+        glEnd();
+
+    glTranslated(0.0, 0.0, 5.0); //-45
+
+        glColor3f(0.0, 0.5, 0.0);
+        glBegin(GL_QUADS);
+            glVertex3f(50.0,0.0,5.0);
+            glVertex3f(50.0,0.0,0.0);
+            glVertex3f(-50.0,0.0,0.0);
+            glVertex3f(-50.0,0.0,5.0);
+        glEnd();
+
+    glTranslated(0.0, 0.0, 5.0); //-40
+
+        glColor3f(0.5, 0.5, 0.5);
+        glBegin(GL_QUADS);
+            glVertex3f(50.0,0.0,5.0);
+            glVertex3f(50.0,0.0,0.0);
+            glVertex3f(-50.0,0.0,0.0);
+            glVertex3f(-50.0,0.0,5.0);
+        glEnd();
+
+    glTranslated(0.0, 0.0, 5.0); //-35
+
+        glColor3f(0.0, 0.5, 0.0);
+        glBegin(GL_QUADS);
+            glVertex3f(50.0,0.0,5.0);
+            glVertex3f(50.0,0.0,0.0);
+            glVertex3f(-50.0,0.0,0.0);
+            glVertex3f(-50.0,0.0,5.0);
+        glEnd();
+
+    glTranslated(0.0, 0.0, 5.0); //-30
+
+        glColor3f(0.5, 0.5, 0.5);
+        glBegin(GL_QUADS);
+            glVertex3f(50.0,0.0,5.0);
+            glVertex3f(50.0,0.0,0.0);
+            glVertex3f(-50.0,0.0,0.0);
+            glVertex3f(-50.0,0.0,5.0);
+        glEnd();
+
+    glTranslated(0.0, 0.0, 5.0); //-35
+
+        glColor3f(0.0, 0.5, 0.0);
+        glBegin(GL_QUADS);
+            glVertex3f(50.0,0.0,5.0);
+            glVertex3f(50.0,0.0,0.0);
+            glVertex3f(-50.0,0.0,0.0);
+            glVertex3f(-50.0,0.0,5.0);
+        glEnd();
+
+    glTranslated(0.0, 0.0, 5.0); //-30
+
+        glColor3f(0.5, 0.5, 0.5);
+        glBegin(GL_QUADS);
+            glVertex3f(50.0,0.0,5.0);
+            glVertex3f(50.0,0.0,0.0);
+            glVertex3f(-50.0,0.0,0.0);
+            glVertex3f(-50.0,0.0,5.0);
+        glEnd();
+
+    glTranslated(0.0, 0.0, 5.0); //-25
+
+        glColor3f(0.0, 0.5, 0.0);
+        glBegin(GL_QUADS);
+            glVertex3f(50.0,0.0,5.0);
+            glVertex3f(50.0,0.0,0.0);
+            glVertex3f(-50.0,0.0,0.0);
+            glVertex3f(-50.0,0.0,5.0);
+        glEnd();
+
+    glTranslated(0.0, 0.0, 5.0); //-20
+
+        glColor3f(0.5, 0.5, 0.5);
+        glBegin(GL_QUADS);
+            glVertex3f(50.0,0.0,5.0);
+            glVertex3f(50.0,0.0,0.0);
+            glVertex3f(-50.0,0.0,0.0);
+            glVertex3f(-50.0,0.0,5.0);
+        glEnd();
+
+    glTranslated(0.0, 0.0, 5.0); //-15
+
+        glColor3f(0.0, 0.5, 0.0);
+        glBegin(GL_QUADS);
+            glVertex3f(50.0,0.0,5.0);
+            glVertex3f(50.0,0.0,0.0);
+            glVertex3f(-50.0,0.0,0.0);
+            glVertex3f(-50.0,0.0,5.0);
+        glEnd();
+
+    glTranslated(0.0, 0.0, 5.0); //-10
+
+        glColor3f(0.5, 0.5, 0.5);
+        glBegin(GL_QUADS);
+            glVertex3f(50.0,0.0,5.0);
+            glVertex3f(50.0,0.0,0.0);
+            glVertex3f(-50.0,0.0,0.0);
+            glVertex3f(-50.0,0.0,5.0);
+        glEnd();
+
+    glTranslated(0.5, 0.5, 5.0); //-5
+
+        glColor3f(0.0, 0.5, 0.0);
+        glBegin(GL_QUADS);
+            glVertex3f(50.0,0.0,5.0);
+            glVertex3f(50.0,0.0,0.0);
+            glVertex3f(-50.0,0.0,0.0);
+            glVertex3f(-50.0,0.0,5.0);
+        glEnd();
+
+    glTranslated(0.0, 0.0, 5.0); //0
+
+        glColor3f(0.5, 0.5, 0.5);
+        glBegin(GL_QUADS);
+            glVertex3f(50.0,0.0,5.0);
+            glVertex3f(50.0,0.0,0.0);
+            glVertex3f(-50.0,0.0,0.0);
+            glVertex3f(-50.0,0.0,5.0);
+        glEnd();
+
+    glTranslated(0.0, 0.0, 5.0); //5
+
+        glColor3f(0.0, 0.5, 0.0);
+        glBegin(GL_QUADS);
+            glVertex3f(50.0,0.0,5.0);
+            glVertex3f(50.0,0.0,0.0);
+            glVertex3f(-50.0,0.0,0.0);
+            glVertex3f(-50.0,0.0,5.0);
+        glEnd();
+
+    glTranslated(0.0, 0.0, 5.0); //10
+
+        glColor3f(0.5, 0.5, 0.5);
+        glBegin(GL_QUADS);
+            glVertex3f(50.0,0.0,5.0);
+            glVertex3f(50.0,0.0,0.0);
+            glVertex3f(-50.0,0.0,0.0);
+            glVertex3f(-50.0,0.0,5.0);
+        glEnd();
+
+    glTranslated(0.0, 0.0, 5.0); //15
+
+        glColor3f(0.0, 0.0, 0.0);
+        glBegin(GL_QUADS);
+            glVertex3f(50.0,0.0,5.0);
+            glVertex3f(50.0,0.0,0.0);
+            glVertex3f(-50.0,0.0,0.0);
+            glVertex3f(-50.0,0.0,5.0);
+        glEnd();
+
+    glTranslated(0.0, 0.0, 5.0); //20
+
+        glColor3f(0.5, 0.5, 0.5);
+        glBegin(GL_QUADS);
+            glVertex3f(50.0,0.0,5.0);
+            glVertex3f(50.0,0.0,0.0);
+            glVertex3f(-50.0,0.0,0.0);
+            glVertex3f(-50.0,0.0,5.0);
+        glEnd();
+
+    glTranslated(0.0, 0.0, 5.0); //25
+
+        glColor3f(0.0, 0.5, 0.0);
+        glBegin(GL_QUADS);
+            glVertex3f(50.0,0.0,5.0);
+            glVertex3f(50.0,0.0,0.0);
+            glVertex3f(-50.0,0.0,0.0);
+            glVertex3f(-50.0,0.0,5.0);
+        glEnd();
+
+    glTranslated(0.0, 0.0, 5.0); //30
+
+        glColor3f(0.5, 0.5, 0.5);
+        glBegin(GL_QUADS);
+            glVertex3f(50.0,0.0,5.0);
+            glVertex3f(50.0,0.0,0.0);
+            glVertex3f(-50.0,0.0,0.0);
+            glVertex3f(-50.0,0.0,5.0);
+        glEnd();
+
+    glTranslated(0.0, 0.0, 5.0); //35
+
+        glColor3f(0.0, 0.5, 0.0);
+        glBegin(GL_QUADS);
+            glVertex3f(50.0,0.0,5.0);
+            glVertex3f(50.0,0.0,0.0);
+            glVertex3f(-50.0,0.0,0.0);
+            glVertex3f(-50.0,0.0,5.0);
+        glEnd();
+
+    glTranslated(0.0, 0.0, 5.0); //40
+
+        glColor3f(0.5, 0.5, 0.5);
+        glBegin(GL_QUADS);
+            glVertex3f(50.0,0.0,5.0);
+            glVertex3f(50.0,0.0,0.0);
+            glVertex3f(-50.0,0.0,0.0);
+            glVertex3f(-50.0,0.0,5.0);
+        glEnd();
+
+    glTranslated(0.0, 0.0, 10.0); //45
+
+        glColor3f(0.0, 0.5, 0.0);
+        glBegin(GL_QUADS);
+            glVertex3f(50.0,0.0,5.0);
+            glVertex3f(50.0,0.0,0.0);
+            glVertex3f(-50.0,0.0,0.0);
+            glVertex3f(-50.0,0.0,5.0);
+        glEnd();
+
+    glTranslated(0.0, 0.0, 5.0); //50
+
+        glColor3f(0.5, 0.5, 0.5);
+        glBegin(GL_QUADS);
+            glVertex3f(50.0,0.0,5.0);
+            glVertex3f(50.0,0.0,0.0);
+            glVertex3f(-50.0,0.0,0.0);
+            glVertex3f(-50.0,0.0,5.0);
+        glEnd();
+
+    glPopMatrix();
+}
+
 
 void TerrenoBase()
 {
     glPushMatrix();
-    glColor3f(0.5, 0.5,0.5);
-        glBegin(GL_QUADS);
-        glVertex3f(50.0,0.0,50.0);
-        glVertex3f(50.0,0.0,-50.0);
-        glVertex3f(-50.0,0.0,-50.0);
-        glVertex3f(-50.0,0.0,50.0);
-    glEnd();
+
+    DivisaoCampo();
 
     glColor3f(1.0, 0.0,0.0);
     glScaled(1.0, 4.0, 1.0);
     glutWireCube(1);
 
-    //for(int i=0; i<50; i+5)
-    //{
-
-    //}
-    //glColor3f(0.0, 1.0,0.0);
-    //    glBegin(GL_QUADS);
-    //    glVertex3f(50.0,0.0,50.0);
-    //    glVertex3f(50.0,0.0,-50.0);
-    //    glVertex3f(-50.0,0.0,-50.0);
-    //    glVertex3f(-50.0,0.0,50.0);
-   // glEnd();
-
     glPopMatrix();
 }
+
+
+
 
 
 void Desenha(void)
@@ -105,6 +336,8 @@ void Desenha(void)
     glRotated(rodarHori, 0.0, 1.0, 0.0);
     glRotated(rodarVert, 1.0, 0.0, 0.0);
     Canon();
+
+
     glPopMatrix();
 
 
@@ -136,7 +369,7 @@ void AlteraTamanhoJanela (int w, int h)
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    gluLookAt(0,1,13, 0,4,0, 0,1,0); // Especifica posiï¿½ï¿½o do observador e do alvo
+    gluLookAt(0,1,13, 0,4,0, 0,1,0); // Especifica posição do observador e do alvo
 }
 
 void Teclado(unsigned char key, int x, int y)
@@ -164,6 +397,7 @@ void Teclado(unsigned char key, int x, int y)
     if (key == 'e')
     {
         tiro.vis = true;
+        tiro.tempo = 0.0;
         tiro.y = 2.0*sin((rodarVert*M_PI)/180.0);
         float raio = 2.0*cos((rodarVert*M_PI)/180.0);
         tiro.x = -1.0*raio*sin((rodarHori*M_PI)/180.0);
@@ -173,6 +407,10 @@ void Teclado(unsigned char key, int x, int y)
         tiro.forcay = tiro.y/norma;
         tiro.forcaz = tiro.z/norma;
         tiro.y = tiro.y + 2.0;
+        tiro.vel = 10;
+        tiro.x0 = tiro.x;
+        tiro.y0 = tiro.y;
+        tiro.z0 = tiro.z;
     }
     glutPostRedisplay();
 
@@ -181,11 +419,15 @@ void Teclado(unsigned char key, int x, int y)
 void Timer(int value)
 {
     if(tiro.vis){
-         tiro.x = tiro.x + tiro.forcax;
-         tiro.y = tiro.y + tiro.forcay;
-         tiro.z = tiro.z + tiro.forcaz;
-
+         if(tiro.y > 0.2){
+         tiro.x =    tiro.x0  + tiro.vel*tiro.x0*tiro.tempo;
+         tiro.y =    tiro.y0  + tiro.vel*sin((rodarVert*M_PI)/180.0)*tiro.tempo - 0.5*G*tiro.tempo*tiro.tempo;
+         tiro.z =    tiro.z0  + tiro.vel*tiro.z0*tiro.tempo;
+         }
+         tiro.tempo += 0.01;
     }
+
+
     glutTimerFunc(10,Timer,0);
     glutPostRedisplay();
 }

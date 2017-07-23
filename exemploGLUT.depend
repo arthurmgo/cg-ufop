@@ -40,23 +40,46 @@
 
 1307913234 g:\ufop 2017-01\computa«√o gr¡fica\pr¡tica 4\aula 4-win\include\gl\freeglut_ext.h
 
-1499553403 source:c:\users\arthu\documents\github\cg-ufop\main.cpp
+1500775432 source:f:\ufop 2017-01\computa«√o gr¡fica\trabalho 1\aula 4-win\main.cpp
 	<GL/gl.h>
 	<GL/glut.h>
 	<stdlib.h>
 	<cmath>
+	<iostream>
 
-1307916834 c:\users\arthu\documents\github\cg-ufop\include\gl\glut.h
+1307920434 f:\ufop 2017-01\computa«√o gr¡fica\trabalho 1\aula 4-win\include\gl\glut.h
 	"freeglut.h"
 
-1307916834 c:\users\arthu\documents\github\cg-ufop\include\gl\freeglut.h
+1307920434 f:\ufop 2017-01\computa«√o gr¡fica\trabalho 1\aula 4-win\include\gl\freeglut.h
 	"freeglut_std.h"
 	"freeglut_ext.h"
 
-1307916834 c:\users\arthu\documents\github\cg-ufop\include\gl\freeglut_std.h
+1307920434 f:\ufop 2017-01\computa«√o gr¡fica\trabalho 1\aula 4-win\include\gl\freeglut_std.h
 	<windows.h>
 	<GL/gl.h>
 	<GL/glu.h>
 
-1307916834 c:\users\arthu\documents\github\cg-ufop\include\gl\freeglut_ext.h
+1307920434 f:\ufop 2017-01\computa«√o gr¡fica\trabalho 1\aula 4-win\include\gl\freeglut_ext.h
+
+1500782028 source:c:\users\arthu\desktop\aula 4-win\main.cpp
+	<GL/gl.h>
+	<stdio.h>
+	<GL/glut.h>
+	<stdlib.h>
+	<cmath>
+	<iostream>
+
+1307916834 c:\users\arthu\desktop\aula 4-win\include\gl\glut.h
+	"freeglut.h"
+
+1307916834 c:\users\arthu\desktop\aula 4-win\include\gl\freeglut.h
+	"freeglut_std.h"
+	"freeglut_ext.h"
+
+1307916834 c:\users\arthu\desktop\aula 4-win\include\gl\freeglut_std.h
+	<windows.h>
+	<GL/gl.h>
+	<GL/glu.h>
+
+1307916834 c:\users\arthu\desktop\aula 4-win\include\gl\freeglut_ext.h
 

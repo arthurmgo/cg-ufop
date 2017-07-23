@@ -391,7 +391,7 @@ void AlteraTamanhoJanela (int w, int h)
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    gluLookAt(0,1,13, 0,4,0, 0,1,0); // Especifica posição do observador e do alvo
+    gluLookAt(0,1,13, 0,4,0, 0,1,0); // Especifica posiÃ§Ã£o do observador e do alvo
 }
 
 void Teclado(unsigned char key, int x, int y)

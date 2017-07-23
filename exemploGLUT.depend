@@ -83,13 +83,14 @@
 
 1307916834 c:\users\arthu\desktop\aula 4-win\include\gl\freeglut_ext.h
 
-1500787712 source:c:\users\mariane\documents\github\cg-ufop\main.cpp
+1500790128 source:c:\users\mariane\documents\github\cg-ufop\main.cpp
 	<GL/gl.h>
 	<stdio.h>
 	<GL/glut.h>
 	<stdlib.h>
 	<cmath>
 	<iostream>
+	<ctime>
 
 1500787353 c:\users\mariane\documents\github\cg-ufop\include\gl\glut.h
 	"freeglut.h"

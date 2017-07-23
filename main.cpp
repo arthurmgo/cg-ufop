@@ -4,8 +4,13 @@
 #include <stdlib.h>
 #include <cmath>
 #include <iostream>
+#include <ctime>
 
 #define G 9.8
+
+
+#define randomico() ((float) rand()/ RAND_MAX) //Numero aleatório entre 0 e1
+
 GLfloat angle = 60, fAspect;
 int rodar = 0.0;
 int rodarApa = 0.0;
@@ -15,6 +20,9 @@ float soma = 0.2;
 
 int rodarHori = 0;
 int rodarVert = 0;
+
+
+double d_x, d_z;
 
 typedef struct
 {
@@ -44,9 +52,13 @@ void Inicializa(void)
     gluPerspective(65, 1.0, 0.5, 500);
     glClearColor (1.0, 1.0, 1.0, 0.0);
 
-
     glColor3f(0.0, 0.0,0.0);
     angle = 60;
+
+    srand(time(0));
+    d_z = (25.0 * randomico()) + 25.0;
+    d_x = (50.0 - (-50.0)) * randomico() + (-50.0);
+
 }
 
 void Canon()
@@ -65,6 +77,7 @@ void Canon()
     glPopMatrix();
 
 }
+
 void DivisaoCampo()
 {
     glPushMatrix();
@@ -306,11 +319,12 @@ void Alvo()
 {
     glPushMatrix();
 
-   // std::cout << d_z << std::endl;
+
     //random_variable = rand();
     //double d_x = 0.0;
 
-    glTranslated(0.0, 0.0, -25.0);
+
+    glTranslated(d_x, 0.0, -d_z);
 
     glColor3f(0.0, 1.0, 1.0);
 

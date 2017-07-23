@@ -316,7 +316,7 @@ void Alvo()
 
     glScaled(2.0, 4.0, 2.0);
 
-    glutSolidCube(1);
+    glutWireCube(1);
 
     glPopMatrix();
 

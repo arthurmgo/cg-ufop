@@ -24,6 +24,8 @@ int rodarVert = 0;
 
 double d_x, d_z;
 
+float forca = 10.0;
+
 typedef struct
 {
     float x;
@@ -443,10 +445,19 @@ void Teclado(unsigned char key, int x, int y)
         tiro.forcay = tiro.y/norma;
         tiro.forcaz = tiro.z/norma;
         tiro.y = tiro.y + 2.0;
-        tiro.vel = 10;
+        tiro.vel = forca;
         tiro.x0 = tiro.x;
         tiro.y0 = tiro.y;
         tiro.z0 = tiro.z;
+    }
+    if (key == '+')
+    {
+        forca += 2.0;
+    }
+    if (key == '-')
+    {
+        forca -= 2.0;
+
     }
     glutPostRedisplay();
 

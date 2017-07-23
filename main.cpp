@@ -26,6 +26,8 @@ double d_x, d_z;
 
 float forca = 10.0;
 
+int n = 1;
+
 typedef struct
 {
     float x;
@@ -59,9 +61,54 @@ void Inicializa(void)
 
     srand(time(0));
     d_z = (25.0 * randomico()) + 25.0;
-    d_x = (50.0 - (-50.0)) * randomico() + (-50.0);
+    d_x = (40.0 - (-40.0)) * randomico() + (-40.0);
 
 }
+
+
+void ativaIluminacao (void){
+	GLfloat luzAmbiente[4]={0.2,0.2,0.2,1.0};
+	GLfloat luzDifusa[4]={0.7,0.7,0.7,1.0};	   // "cor"
+	GLfloat luzEspecular[4]={1.0, 1.0, 1.0, 1.0};// "brilho"
+	GLfloat posicaoLuz[4]={0.0, 50.0, 50.0, 1.0};
+	// Capacidade de brilho do material
+	GLfloat especularidade[4]={1.0,1.0,1.0,1.0};
+	GLint especMaterial = 60;
+	// Define a refletância do material
+	glMaterialfv(GL_FRONT,GL_SPECULAR, especularidade);
+	// Define a concentração do brilho
+	glMateriali(GL_FRONT,GL_SHININESS,especMaterial);
+
+	// Ativa o uso da luz ambiente
+	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luzAmbiente);
+
+	// Define os parâmetros da luz de número 0
+	glLightfv(GL_LIGHT0, GL_AMBIENT, luzAmbiente);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, luzDifusa );
+	glLightfv(GL_LIGHT0, GL_SPECULAR, luzEspecular );
+	glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuz );
+
+    // Habilita a definição da cor do material a partir da cor corrente
+	glEnable(GL_COLOR_MATERIAL);
+	//Habilita o uso de iluminação
+	glEnable(GL_LIGHTING);
+	// Habilita a luz de número 0
+	glEnable(GL_LIGHT0);
+	// Habilita o depth-buffering
+	glEnable(GL_DEPTH_TEST);
+
+	// Habilita o modelo de colorização de Gouraud
+	glShadeModel(GL_SMOOTH);
+}
+
+
+void desativaIluminacao(void){
+	glDisable(GL_COLOR_MATERIAL);
+	glDisable(GL_LIGHTING);
+	glDisable(GL_LIGHT0);
+	glDisable(GL_DEPTH_TEST);
+}
+
 
 void Canon()
 {
@@ -334,21 +381,27 @@ void Alvo()
 
 }
 
+
 void MarcadorForca()
 {
     glPushMatrix();
-
+    desativaIluminacao();
     glTranslated(5.0, 5.0, 0.0);
-    glColor3f(1.0, 1.0, 0.0);
-    glBegin(GL_QUADS);
-        glVertex3f(0.0,10.0,0.0);
-        glVertex3f(2.0,12.0,0.0);
-        glVertex3f(0.0,10.0,0.0);
-        glVertex3f(0.0,12.0,0.0);
-    glEnd();
+    glColor3f(1.0, 1.5, 0.0);
+    for(int i = 0; i<n ; i++)
+    {
+        glBegin(GL_QUADS);
+            glVertex3f(0.5,0.2*n,0.0);
+            glVertex3f(0.5,0.0,0.0);
+            glVertex3f(0.0,0.0,0.0);
+            glVertex3f(0.0,0.2*n,0.0);
 
+        glEnd();
+    }
+    ativaIluminacao();
     glPopMatrix();
 }
+
 
 void TerrenoBase()
 {
@@ -358,8 +411,6 @@ void TerrenoBase()
 
     Alvo();
 
-    MarcadorForca();
-
     glColor3f(1.0, 0.0,0.0);
     glScaled(1.0, 4.0, 1.0);
     glutWireCube(1);
@@ -368,37 +419,37 @@ void TerrenoBase()
 }
 
 
-<<<<<<< HEAD
-=======
 void Trajetoria(void){
     float raio = 2.0*cos((rodarVert*M_PI)/180.0);
     float tempo = 0.0;
     float y = 2.0*sin((rodarVert*M_PI)/180.0);
     float x = -1.0*raio*sin((rodarHori*M_PI)/180.0);
     float z = -1.0*raio*cos((rodarHori*M_PI)/180.0);
-     y = y+2;
+    y = y+2;
     float x0 = x;
     float y0 = y;
     float z0 = z;
     glColor3f(0.5, 1.0,0.5);
-    glBegin(GL_LINE);
-    printf("INICIO\n");
+    glBegin(GL_LINE_STRIP);
+
+    //printf("INICIO\n");
     do{
         x =    x0  + forca*x0*tempo;
         y =    y0  + forca*sin((rodarVert*M_PI)/180.0)*tempo - 0.5*G*tempo*tempo;
         z =    z0  + forca*tiro.z0*tempo;
         glVertex3f(x,y,z);
-        printf("%f - %f - %f\n", x,y,z);
+        //printf("%f - %f - %f\n", x,y,z);
         tempo += 0.01;
     }while(y > 0);
-    printf("FIM\n");
+
+    //printf("FIM\n");
+
     glEnd();
 
 
 }
 
 
->>>>>>> 35347661e30c2cc3578392bee4be81683e6ed973
 void Desenha(void)
 {
     glClearColor (1.0, 1.0, 1.0, 0.0);
@@ -411,6 +462,8 @@ void Desenha(void)
 
     glPushMatrix();
     TerrenoBase();
+
+    MarcadorForca();
 
     glTranslated(0.0,2.0,0.0);
     glRotated(rodarHori, 0.0, 1.0, 0.0);
@@ -450,10 +503,6 @@ void AlteraTamanhoJanela (int w, int h)
 }
 
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 35347661e30c2cc3578392bee4be81683e6ed973
 void Teclado(unsigned char key, int x, int y)
 {
     if (key == 'a')
@@ -504,10 +553,12 @@ void Teclado(unsigned char key, int x, int y)
     if (key == '+')
     {
         forca += 2.0;
+        n++;
     }
     if (key == '-')
     {
         forca -= 2.0;
+        n--;
 
     }
     glutPostRedisplay();
@@ -515,40 +566,7 @@ void Teclado(unsigned char key, int x, int y)
 }
 
 
-void ativaIluminacao (void){
-	GLfloat luzAmbiente[4]={0.2,0.2,0.2,1.0};
-	GLfloat luzDifusa[4]={0.7,0.7,0.7,1.0};	   // "cor"
-	GLfloat luzEspecular[4]={1.0, 1.0, 1.0, 1.0};// "brilho"
-	GLfloat posicaoLuz[4]={0.0, 50.0, 50.0, 1.0};
-	// Capacidade de brilho do material
-	GLfloat especularidade[4]={1.0,1.0,1.0,1.0};
-	GLint especMaterial = 60;
-	// Define a refletância do material
-	glMaterialfv(GL_FRONT,GL_SPECULAR, especularidade);
-	// Define a concentração do brilho
-	glMateriali(GL_FRONT,GL_SHININESS,especMaterial);
 
-	// Ativa o uso da luz ambiente
-	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luzAmbiente);
-
-	// Define os parâmetros da luz de número 0
-	glLightfv(GL_LIGHT0, GL_AMBIENT, luzAmbiente);
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, luzDifusa );
-	glLightfv(GL_LIGHT0, GL_SPECULAR, luzEspecular );
-	glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuz );
-
-    // Habilita a definição da cor do material a partir da cor corrente
-	glEnable(GL_COLOR_MATERIAL);
-	//Habilita o uso de iluminação
-	glEnable(GL_LIGHTING);
-	// Habilita a luz de número 0
-	glEnable(GL_LIGHT0);
-	// Habilita o depth-buffering
-	glEnable(GL_DEPTH_TEST);
-
-	// Habilita o modelo de colorização de Gouraud
-	glShadeModel(GL_SMOOTH);
-}
 
 
 void Timer(int value)

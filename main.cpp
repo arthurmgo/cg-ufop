@@ -66,7 +66,8 @@ void Inicializa(void)
 }
 
 
-void ativaIluminacao (void){
+void ativaIluminacao (void)
+{
 	GLfloat luzAmbiente[4]={0.2,0.2,0.2,1.0};
 	GLfloat luzDifusa[4]={0.7,0.7,0.7,1.0};	   // "cor"
 	GLfloat luzEspecular[4]={1.0, 1.0, 1.0, 1.0};// "brilho"
@@ -102,7 +103,8 @@ void ativaIluminacao (void){
 }
 
 
-void desativaIluminacao(void){
+void desativaIluminacao(void)
+{
 	glDisable(GL_COLOR_MATERIAL);
 	glDisable(GL_LIGHTING);
 	glDisable(GL_LIGHT0);
@@ -392,10 +394,10 @@ void MarcadorForca()
     for(int i = 0; i<n ; i++)
     {
         glBegin(GL_QUADS);
-            glVertex3f(0.5,0.2*n,0.0);
+            glVertex3f(0.5,0.1*n,0.0);
             glVertex3f(0.5,0.0,0.0);
             glVertex3f(0.0,0.0,0.0);
-            glVertex3f(0.0,0.2*n,0.0);
+            glVertex3f(0.0,0.1*n,0.0);
 
         glEnd();
     }
@@ -422,6 +424,11 @@ void TerrenoBase()
     glPopMatrix();
 }
 
+void DestroiAlvo()
+{
+    std::cout << "Destruiu!!" << std::endl;
+}
+
 void Trajetoria(void)
 {
     float raio = 2.0*cos((rodarVert*M_PI)/180.0);
@@ -439,12 +446,17 @@ void Trajetoria(void)
 
     //printf("INICIO\n");
     do
-    {        x =    x0  + forca*x0*tempo;
+    {
+        x =    x0  + forca*x0*tempo;
         y =    y0  + forca*sin((rodarVert*M_PI)/180.0)*tempo - 0.5*G*tempo*tempo;
         z =    z0  + forca*z0*tempo;
         glVertex3f(x,y,z);
         //printf("%f - %f - %f\n", x,y,z);
         tempo += 0.01;
+        if((x == d_x && z == d_z))
+        {
+            DestroiAlvo();
+        }
     }while(y > 0);
     //printf("FIM\n");
     glEnd();

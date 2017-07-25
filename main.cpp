@@ -29,6 +29,7 @@ float forca = 10.0;
 int n = 1;
 
 double rotacao;
+double senrot = 0.0, cosrot = 90.0;
 
 typedef struct
 {
@@ -66,7 +67,6 @@ void Inicializa(void)
     d_z = (25.0 * randomico()) + 25.0;
     d_x = (40.0 - (-40.0)) * randomico() + (-40.0);
     rotacao = 180.0 * randomico();
-    std::cout << rotacao << std::endl;
 
 }
 
@@ -416,9 +416,10 @@ void GeraVento()
     glPushMatrix();
 
     desativaIluminacao();
+
     glTranslated(-5.0, 5.0, 0.0);
     glRotated(rotacao, 0.0, 1.0, 0.0);
-
+    glRotated(290.0, 1.0, 0.0, 0.0);
     glColor3f(0.0, 0.0, 0.5);
 
     glBegin(GL_QUADS);
@@ -434,10 +435,14 @@ void GeraVento()
         glVertex3f(-0.1,0.5,0);
     glEnd();
 
+    senrot = sin(rotacao);
+    cosrot = cos(rotacao);
+
     ativaIluminacao();
     glPopMatrix();
 
 }
+
 
 void TerrenoBase()
 {
@@ -457,10 +462,12 @@ void TerrenoBase()
     glPopMatrix();
 }
 
+
 void DestroiAlvo()
 {
     std::cout << "Destruiu!!" << std::endl;
 }
+
 
 void Trajetoria(void)
 {
@@ -535,6 +542,7 @@ void Desenha(void)
     glutSwapBuffers();
 }
 
+
 void AlteraTamanhoJanela (int w, int h)
 {
     glViewport (0, 0, (GLsizei) w, (GLsizei) h);
@@ -548,6 +556,7 @@ void AlteraTamanhoJanela (int w, int h)
     glLoadIdentity();
     gluLookAt(0,1,13, 0,4,0, 0,1,0); // Especifica posição do observador e do alvo
 }
+
 
 void Teclado(unsigned char key, int x, int y)
 {
@@ -579,8 +588,8 @@ void Teclado(unsigned char key, int x, int y)
         float raio = 2.0*cos((rodarVert*M_PI)/180.0);
 
         tiro.y = 2.0*sin((rodarVert*M_PI)/180.0);
-        tiro.x = -1.0*raio*sin((rodarHori*M_PI)/180.0);
-        tiro.z = -1.0*raio*cos((rodarHori*M_PI)/180.0);
+        tiro.x = -1.0*raio*sin((rodarHori*M_PI)/180.0) + cosrot;
+        tiro.z = -1.0*raio*cos((rodarHori*M_PI)/180.0) + senrot;
 
         float norma = sqrt(tiro.x*tiro.x + tiro.y*tiro.y + tiro.z*tiro.z);
 

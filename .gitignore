@@ -44,3 +44,6 @@
 *.exe
 *.layout
 *.o
+*.depend
+*.exe
+*.o

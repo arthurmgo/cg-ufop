@@ -44,6 +44,7 @@ typedef struct
     float forcaz;
     float tempo;
     float vel;
+    float angulo;
 
 } Bola;
 
@@ -456,7 +457,7 @@ void Trajetoria(void)
     do
     {
         x =    x0  + forca*x0*tempo;
-        y =    y0  + forca*sin((rodarVert*M_PI)/180.0)*tempo - 0.5*G*tempo*tempo;
+        y =    y0  + forca*2*sin((rodarVert*M_PI)/180.0)*tempo - 0.5*G*tempo*tempo;
         z =    z0  + forca*z0*tempo;
         glVertex3f(x,y,z);
         //printf("%f - %f - %f\n", x,y,z);
@@ -570,6 +571,8 @@ void Teclado(unsigned char key, int x, int y)
         tiro.x0 = tiro.x;
         tiro.y0 = tiro.y;
         tiro.z0 = tiro.z;
+
+        tiro.angulo = (rodarVert*M_PI)/180.0;
     }
     if (key == '+')
     {
@@ -594,11 +597,11 @@ void Timer(int value)
         if(tiro.y > 0.2)
         {
             tiro.x =    tiro.x0  + tiro.vel*tiro.x0*tiro.tempo;
-            tiro.y =    tiro.y0  + tiro.vel*sin((rodarVert*M_PI)/180.0)*tiro.tempo - 0.5*G*tiro.tempo*tiro.tempo;
+            tiro.y =    tiro.y0  + tiro.vel*2*sin(tiro.angulo)*tiro.tempo - 0.5*G*tiro.tempo*tiro.tempo;
             tiro.z =    tiro.z0  + tiro.vel*tiro.z0*tiro.tempo;
             if(tiro.y <0.2)
             {
-                tiro.vis = false;
+                tiro.vis = 0.0;
             }
         }
         tiro.tempo += 0.01;

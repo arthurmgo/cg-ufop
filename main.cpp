@@ -24,7 +24,7 @@ int rodarVert = 0;
 
 double d_x, d_z;
 
-float forca = 10.0;
+float forca = 1.0;
 
 int n = 1;
 
@@ -44,7 +44,8 @@ typedef struct
     float forcaz;
     float tempo;
     float vel;
-    float angulo;
+    float anguloy;
+    float anguloxz;
     int pulo;
 
 } Bola;
@@ -74,47 +75,47 @@ void Inicializa(void)
 
 void ativaIluminacao (void)
 {
-	GLfloat luzAmbiente[4]={0.2,0.2,0.2,1.0};
-	GLfloat luzDifusa[4]={0.7,0.7,0.7,1.0};	   // "cor"
-	GLfloat luzEspecular[4]={1.0, 1.0, 1.0, 1.0};// "brilho"
-	GLfloat posicaoLuz[4]={0.0, 50.0, 50.0, 1.0};
-	// Capacidade de brilho do material
-	GLfloat especularidade[4]={1.0,1.0,1.0,1.0};
-	GLint especMaterial = 60;
-	// Define a refletância do material
-	glMaterialfv(GL_FRONT,GL_SPECULAR, especularidade);
-	// Define a concentração do brilho
-	glMateriali(GL_FRONT,GL_SHININESS,especMaterial);
+    GLfloat luzAmbiente[4]= {0.2,0.2,0.2,1.0};
+    GLfloat luzDifusa[4]= {0.7,0.7,0.7,1.0};	  // "cor"
+    GLfloat luzEspecular[4]= {1.0, 1.0, 1.0, 1.0}; // "brilho"
+    GLfloat posicaoLuz[4]= {0.0, 50.0, 50.0, 1.0};
+    // Capacidade de brilho do material
+    GLfloat especularidade[4]= {1.0,1.0,1.0,1.0};
+    GLint especMaterial = 60;
+    // Define a refletância do material
+    glMaterialfv(GL_FRONT,GL_SPECULAR, especularidade);
+    // Define a concentração do brilho
+    glMateriali(GL_FRONT,GL_SHININESS,especMaterial);
 
-	// Ativa o uso da luz ambiente
-	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luzAmbiente);
+    // Ativa o uso da luz ambiente
+    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luzAmbiente);
 
-	// Define os parâmetros da luz de número 0
-	glLightfv(GL_LIGHT0, GL_AMBIENT, luzAmbiente);
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, luzDifusa );
-	glLightfv(GL_LIGHT0, GL_SPECULAR, luzEspecular );
-	glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuz );
+    // Define os parâmetros da luz de número 0
+    glLightfv(GL_LIGHT0, GL_AMBIENT, luzAmbiente);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, luzDifusa );
+    glLightfv(GL_LIGHT0, GL_SPECULAR, luzEspecular );
+    glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuz );
 
     // Habilita a definição da cor do material a partir da cor corrente
-	glEnable(GL_COLOR_MATERIAL);
-	//Habilita o uso de iluminação
-	glEnable(GL_LIGHTING);
-	// Habilita a luz de número 0
-	glEnable(GL_LIGHT0);
-	// Habilita o depth-buffering
-	glEnable(GL_DEPTH_TEST);
+    glEnable(GL_COLOR_MATERIAL);
+    //Habilita o uso de iluminação
+    glEnable(GL_LIGHTING);
+    // Habilita a luz de número 0
+    glEnable(GL_LIGHT0);
+    // Habilita o depth-buffering
+    glEnable(GL_DEPTH_TEST);
 
-	// Habilita o modelo de colorização de Gouraud
-	glShadeModel(GL_SMOOTH);
+    // Habilita o modelo de colorização de Gouraud
+    glShadeModel(GL_SMOOTH);
 }
 
 
 void desativaIluminacao(void)
 {
-	glDisable(GL_COLOR_MATERIAL);
-	glDisable(GL_LIGHTING);
-	glDisable(GL_LIGHT0);
-	glDisable(GL_DEPTH_TEST);
+    glDisable(GL_COLOR_MATERIAL);
+    glDisable(GL_LIGHTING);
+    glDisable(GL_LIGHT0);
+    glDisable(GL_DEPTH_TEST);
 }
 
 
@@ -400,10 +401,10 @@ void MarcadorForca()
     for(int i = 0; i<n ; i++)
     {
         glBegin(GL_QUADS);
-            glVertex3f(0.5,0.1*n,0.0);
-            glVertex3f(0.5,0.0,0.0);
-            glVertex3f(0.0,0.0,0.0);
-            glVertex3f(0.0,0.1*n,0.0);
+        glVertex3f(0.5,0.1*n,0.0);
+        glVertex3f(0.5,0.0,0.0);
+        glVertex3f(0.0,0.0,0.0);
+        glVertex3f(0.0,0.1*n,0.0);
 
         glEnd();
     }
@@ -423,16 +424,16 @@ void GeraVento()
     glColor3f(0.0, 0.0, 0.5);
 
     glBegin(GL_QUADS);
-        glVertex3f(0.1,0.5,0.0);
-        glVertex3f(0.1,0.0,0.0);
-        glVertex3f(0.0,0.0,0.0);
-        glVertex3f(0.0,0.5,0.0);
+    glVertex3f(0.1,0.5,0.0);
+    glVertex3f(0.1,0.0,0.0);
+    glVertex3f(0.0,0.0,0.0);
+    glVertex3f(0.0,0.5,0.0);
     glEnd();
 
     glBegin(GL_TRIANGLES);
-        glVertex3f(0.2,0.5,0);
-        glVertex3f(0.05,0.7,0);
-        glVertex3f(-0.1,0.5,0);
+    glVertex3f(0.2,0.5,0);
+    glVertex3f(0.05,0.7,0);
+    glVertex3f(-0.1,0.5,0);
     glEnd();
 
     ativaIluminacao();
@@ -465,23 +466,35 @@ void DestroiAlvo()
 
 void Trajetoria(void)
 {
-    float raio = 2.0*cos((rodarVert*M_PI)/180.0);
     float tempo = 0.0;
+
+    float raio = 2.0*cos((rodarVert*M_PI)/180.0);
+
     float y = 2.0*sin((rodarVert*M_PI)/180.0);
     float x = -1.0*raio*sin((rodarHori*M_PI)/180.0);
     float z = -1.0*raio*cos((rodarHori*M_PI)/180.0);
-    y = y+2;
+
+    float norma = sqrt(x*x + y*y + z*z);
+
+    float  forcax = x/norma;
+    float   forcay = y/norma;
+    float  forcaz = z/norma;
+
+    y = y + 2.0;
+
+
     float x0 = x;
     float y0 = y;
     float z0 = z;
+
     glColor3f(0.5, 1.0,0.5);
     glBegin(GL_LINE_STRIP);
     //printf("INICIO\n");
     do
     {
-        x =    x0  + forca*x0*tempo;
-        y =    y0  + forca*2*sin((rodarVert*M_PI)/180.0)*tempo - 0.5*G*tempo*tempo;
-        z =    z0  + forca*z0*tempo;
+        x =    x0  + forca*forcax*tempo;
+        y =    y0  + forca*forcay*tempo - 0.5*G*tempo*tempo;
+        z =    z0  + forca*forcaz*tempo;
         glVertex3f(x,y,z);
         //printf("%f - %f - %f\n", x,y,z);
         tempo += 0.01;
@@ -489,7 +502,8 @@ void Trajetoria(void)
         {
             DestroiAlvo();
         }
-    }while(y > 0);
+    }
+    while(y > 0);
     //printf("FIM\n");
     glEnd();
 }
@@ -598,7 +612,8 @@ void Teclado(unsigned char key, int x, int y)
         tiro.z0 = tiro.z;
 
         tiro.pulo = 0;
-        tiro.angulo = (rodarVert*M_PI)/180.0;
+        tiro.anguloy = (rodarVert*M_PI)/180.0;
+        tiro.anguloxz = (rodarHori*M_PI)/180.0;
     }
     if (key == '+')
     {
@@ -622,23 +637,28 @@ void Timer(int value)
     {
         if(tiro.vel > 0.1)
         {
-            tiro.x =    tiro.x0  + tiro.vel*tiro.x0*tiro.tempo;
-            tiro.y =    tiro.y0  + tiro.vel*2*sin(tiro.angulo)*tiro.tempo - 0.5*G*tiro.tempo*tiro.tempo;
-            tiro.z =    tiro.z0  + tiro.vel*tiro.z0*tiro.tempo;
+            tiro.x =    tiro.x0  + tiro.vel*tiro.forcax*tiro.tempo;
+            tiro.y =    tiro.y0  + tiro.vel*tiro.forcay*tiro.tempo - 0.5*G*tiro.tempo*tiro.tempo;
+            tiro.z =    tiro.z0  + tiro.vel*tiro.forcaz*tiro.tempo;
             if(tiro.y <0.2)
             {
-                //tiro.vis = 0.0;
-                printf("ANGULO: %f VELOCIDADE: %f\n",tiro.angulo,tiro.vel);
-                if(tiro.pulo == 0){
-                    tiro.angulo = tiro.angulo + M_PI_2;
+                printf("ANGULO: %f VELOCIDADE: %f\n",tiro.anguloy,tiro.vel);
+                if(tiro.pulo == 0)
+                {
+                    tiro.anguloy = tiro.anguloy + M_PI_2;
                 }
                 tiro.x0 = tiro.x;
                 tiro.y0 = tiro.y;
                 tiro.z0 = tiro.z;
-                tiro.vel = tiro.vel*0.75;
+                tiro.vel = tiro.vel*0.9;
                 tiro.pulo ++;
                 tiro.tempo = 0.0;
 
+            }
+
+            if (tiro.vel < 0.1)
+            {
+                tiro.vis = false;
             }
         }
         tiro.tempo += 0.01;

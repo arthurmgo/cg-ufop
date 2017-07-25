@@ -28,8 +28,10 @@ float forca = 10.0;
 
 int n = 1;
 
-double rotacao;
-double senrot = 0.0, cosrot = 90.0;
+double rotacaoVento;
+double intensidadeVento = 2.0;
+double intensidadeVentoz;
+double intensidadeVentox;
 
 typedef struct
 {
@@ -46,6 +48,7 @@ typedef struct
     float tempo;
     float vel;
     float angulo;
+    int pulo;
 
 } Bola;
 
@@ -66,7 +69,7 @@ void Inicializa(void)
     srand(time(0));
     d_z = (25.0 * randomico()) + 25.0;
     d_x = (40.0 - (-40.0)) * randomico() + (-40.0);
-    rotacao = 180.0 * randomico();
+    rotacaoVento = 180.0 * randomico();
 
 }
 
@@ -418,7 +421,7 @@ void GeraVento()
     desativaIluminacao();
 
     glTranslated(-5.0, 5.0, 0.0);
-    glRotated(rotacao, 0.0, 1.0, 0.0);
+    glRotated(rotacaoVento, 0.0, 1.0, 0.0);
     glRotated(290.0, 1.0, 0.0, 0.0);
     glColor3f(0.0, 0.0, 0.5);
 
@@ -435,8 +438,15 @@ void GeraVento()
         glVertex3f(-0.1,0.5,0);
     glEnd();
 
-    senrot = sin(rotacao);
-    cosrot = cos(rotacao);
+    std::cout << rotacaoVento << std::endl;
+
+    intensidadeVentoz = intensidadeVento*sin(rotacaoVento);
+    intensidadeVentox = intensidadeVento*cos(rotacaoVento);
+
+
+        std::cout << intensidadeVentox << std::endl;
+        std::cout << intensidadeVentoz << std::endl;
+
 
     ativaIluminacao();
     glPopMatrix();
@@ -588,8 +598,8 @@ void Teclado(unsigned char key, int x, int y)
         float raio = 2.0*cos((rodarVert*M_PI)/180.0);
 
         tiro.y = 2.0*sin((rodarVert*M_PI)/180.0);
-        tiro.x = -1.0*raio*sin((rodarHori*M_PI)/180.0) + cosrot;
-        tiro.z = -1.0*raio*cos((rodarHori*M_PI)/180.0) + senrot;
+        tiro.x = (-1.0*raio*sin((rodarHori*M_PI)/180.0)) + intensidadeVentox;
+        tiro.z = (-1.0*raio*cos((rodarHori*M_PI)/180.0)) + intensidadeVentoz;
 
         float norma = sqrt(tiro.x*tiro.x + tiro.y*tiro.y + tiro.z*tiro.z);
 
@@ -605,6 +615,7 @@ void Teclado(unsigned char key, int x, int y)
         tiro.y0 = tiro.y;
         tiro.z0 = tiro.z;
 
+        tiro.pulo = 0;
         tiro.angulo = (rodarVert*M_PI)/180.0;
     }
     if (key == '+')
@@ -627,14 +638,25 @@ void Timer(int value)
 {
     if(tiro.vis)
     {
-        if(tiro.y > 0.2)
+        if(tiro.vel > 0.1)
         {
             tiro.x =    tiro.x0  + tiro.vel*tiro.x0*tiro.tempo;
             tiro.y =    tiro.y0  + tiro.vel*2*sin(tiro.angulo)*tiro.tempo - 0.5*G*tiro.tempo*tiro.tempo;
             tiro.z =    tiro.z0  + tiro.vel*tiro.z0*tiro.tempo;
             if(tiro.y <0.2)
             {
-                tiro.vis = 0.0;
+                //tiro.vis = 0.0;
+                printf("ANGULO: %f VELOCIDADE: %f\n",tiro.angulo,tiro.vel);
+                if(tiro.pulo == 0){
+                    tiro.angulo = tiro.angulo + M_PI_2;
+                }
+                tiro.x0 = tiro.x;
+                tiro.y0 = tiro.y;
+                tiro.z0 = tiro.z;
+                tiro.vel = tiro.vel*0.75;
+                tiro.pulo ++;
+                tiro.tempo = 0.0;
+
             }
         }
         tiro.tempo += 0.01;

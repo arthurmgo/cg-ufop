@@ -445,7 +445,7 @@ void GeraVento()
     intensidadeVentox = intensidadeVento*cos(rotacaoVento);
 
 
-        std::cout << intensidadeVentox << std::endl;
+        std::cout << cos(50) << std::endl;
         std::cout << intensidadeVentoz << std::endl;
 
 
@@ -612,8 +612,8 @@ void Teclado(unsigned char key, int x, int y)
         float raio = 2.0*cos((rodarVert*M_PI)/180.0);
 
         tiro.y = 2.0*sin((rodarVert*M_PI)/180.0);
-        tiro.x = (-1.0*raio*sin((rodarHori*M_PI)/180.0)) + intensidadeVentox;
-        tiro.z = (-1.0*raio*cos((rodarHori*M_PI)/180.0)) + intensidadeVentoz;
+        tiro.x = (-1.0*raio*sin((rodarHori*M_PI)/180.0));
+        tiro.z = (-1.0*raio*cos((rodarHori*M_PI)/180.0));
 
         float norma = sqrt(tiro.x*tiro.x + tiro.y*tiro.y + tiro.z*tiro.z);
 
@@ -655,9 +655,9 @@ void Timer(int value)
     {
         if(tiro.vel > 0.1)
         {
-            tiro.x =    tiro.x0  + tiro.vel*tiro.forcax*tiro.tempo;
+            tiro.x =    tiro.x0  + tiro.vel*tiro.forcax*tiro.tempo  +   intensidadeVentox;
             tiro.y =    tiro.y0  + tiro.vel*tiro.forcay*tiro.tempo - 0.5*G*tiro.tempo*tiro.tempo;
-            tiro.z =    tiro.z0  + tiro.vel*tiro.forcaz*tiro.tempo;
+            tiro.z =    tiro.z0  + tiro.vel*tiro.forcaz*tiro.tempo  + intensidadeVentoz;
             if(tiro.y <0.2)
             {
                 printf("ANGULO: %f VELOCIDADE: %f\n",tiro.anguloy,tiro.vel);

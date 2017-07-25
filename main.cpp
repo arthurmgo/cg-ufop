@@ -665,6 +665,11 @@ void Timer(int value)
             tiro.z =    tiro.z0  + tiro.vel*tiro.forcaz*tiro.tempo /*+ tiro.ventoz*/;
             tiro.ventox += intensidadeVentox;
             tiro.ventoz += intensidadeVentoz;
+=======
+            tiro.x =    tiro.x0  + tiro.vel*tiro.forcax*tiro.tempo  +   intensidadeVentox;
+            tiro.y =    tiro.y0  + tiro.vel*tiro.forcay*tiro.tempo - 0.5*G*tiro.tempo*tiro.tempo;
+            tiro.z =    tiro.z0  + tiro.vel*tiro.forcaz*tiro.tempo  + intensidadeVentoz;
+>>>>>>> d7249b3192b610ff702f26f703ae5c1663de4b17
             if(tiro.y <0.2)
             {
                 printf("ANGULO: %f VELOCIDADE: %f\n",tiro.anguloy,tiro.vel);

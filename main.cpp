@@ -45,6 +45,7 @@ typedef struct
     float tempo;
     float vel;
     float angulo;
+    int pulo;
 
 } Bola;
 
@@ -596,6 +597,7 @@ void Teclado(unsigned char key, int x, int y)
         tiro.y0 = tiro.y;
         tiro.z0 = tiro.z;
 
+        tiro.pulo = 0;
         tiro.angulo = (rodarVert*M_PI)/180.0;
     }
     if (key == '+')
@@ -618,14 +620,25 @@ void Timer(int value)
 {
     if(tiro.vis)
     {
-        if(tiro.y > 0.2)
+        if(tiro.vel > 0.1)
         {
             tiro.x =    tiro.x0  + tiro.vel*tiro.x0*tiro.tempo;
             tiro.y =    tiro.y0  + tiro.vel*2*sin(tiro.angulo)*tiro.tempo - 0.5*G*tiro.tempo*tiro.tempo;
             tiro.z =    tiro.z0  + tiro.vel*tiro.z0*tiro.tempo;
             if(tiro.y <0.2)
             {
-                tiro.vis = 0.0;
+                //tiro.vis = 0.0;
+                printf("ANGULO: %f VELOCIDADE: %f\n",tiro.angulo,tiro.vel);
+                if(tiro.pulo == 0){
+                    tiro.angulo = tiro.angulo + M_PI_2;
+                }
+                tiro.x0 = tiro.x;
+                tiro.y0 = tiro.y;
+                tiro.z0 = tiro.z;
+                tiro.vel = tiro.vel*0.75;
+                tiro.pulo ++;
+                tiro.tempo = 0.0;
+
             }
         }
         tiro.tempo += 0.01;

@@ -28,7 +28,7 @@ float forca = 10.0;
 
 int n = 1;
 
-int direcao;
+double rotacao;
 
 typedef struct
 {
@@ -64,8 +64,8 @@ void Inicializa(void)
     srand(time(0));
     d_z = (25.0 * randomico()) + 25.0;
     d_x = (40.0 - (-40.0)) * randomico() + (-40.0);
-
-    //direcao = (5 - 1)
+    rotacao = 180.0 * randomico();
+    std::cout << rotacao << std::endl;
 
 }
 
@@ -412,7 +412,29 @@ void MarcadorForca()
 
 void GeraVento()
 {
-    int direcao = randomico();
+    glPushMatrix();
+
+    desativaIluminacao();
+    glTranslated(-5.0, 5.0, 0.0);
+    glRotated(rotacao, 0.0, 1.0, 0.0);
+
+    glColor3f(0.0, 0.0, 0.5);
+
+    glBegin(GL_QUADS);
+        glVertex3f(0.1,0.5,0.0);
+        glVertex3f(0.1,0.0,0.0);
+        glVertex3f(0.0,0.0,0.0);
+        glVertex3f(0.0,0.5,0.0);
+    glEnd();
+
+    glBegin(GL_TRIANGLES);
+        glVertex3f(0.2,0.5,0);
+        glVertex3f(0.05,0.7,0);
+        glVertex3f(-0.1,0.5,0);
+    glEnd();
+
+    ativaIluminacao();
+    glPopMatrix();
 
 }
 
@@ -485,6 +507,8 @@ void Desenha(void)
     TerrenoBase();
 
     MarcadorForca();
+
+    GeraVento();
 
     glTranslated(0.0,2.0,0.0);
     glRotated(rodarHori, 0.0, 1.0, 0.0);

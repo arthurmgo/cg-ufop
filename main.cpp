@@ -448,8 +448,13 @@ void GeraVento()
     intensidadeVentox = intensidadeVento*cos(rotacaoVento);
 
 
+<<<<<<< HEAD
     std::cout << intensidadeVentox << std::endl;
     std::cout << intensidadeVentoz << std::endl;
+=======
+        std::cout << cos(50) << std::endl;
+        std::cout << intensidadeVentoz << std::endl;
+>>>>>>> d7249b3192b610ff702f26f703ae5c1663de4b17
 
 
     ativaIluminacao();
@@ -660,6 +665,7 @@ void Timer(int value)
     {
         if(tiro.vel > 0.1)
         {
+<<<<<<< HEAD
             tiro.x =    tiro.x0  + tiro.vel*tiro.forcax*tiro.tempo /*+ tiro.ventox*/;
             tiro.y =    tiro.y0  + tiro.vel*tiro.forcay*tiro.tempo - 0.5*G*tiro.tempo*tiro.tempo;
             tiro.z =    tiro.z0  + tiro.vel*tiro.forcaz*tiro.tempo /*+ tiro.ventoz*/;

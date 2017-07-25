@@ -28,6 +28,8 @@ float forca = 10.0;
 
 int n = 1;
 
+int direcao;
+
 typedef struct
 {
     float x;
@@ -62,6 +64,8 @@ void Inicializa(void)
     srand(time(0));
     d_z = (25.0 * randomico()) + 25.0;
     d_x = (40.0 - (-40.0)) * randomico() + (-40.0);
+
+    //direcao = (5 - 1)
 
 }
 
@@ -406,6 +410,12 @@ void MarcadorForca()
 }
 
 
+void GeraVento()
+{
+    int direcao = randomico();
+
+}
+
 void TerrenoBase()
 {
     glPushMatrix();
@@ -442,8 +452,6 @@ void Trajetoria(void)
     float z0 = z;
     glColor3f(0.5, 1.0,0.5);
     glBegin(GL_LINE_STRIP);
-
-
     //printf("INICIO\n");
     do
     {
@@ -501,7 +509,6 @@ void Desenha(void)
 
     glutSwapBuffers();
 }
-
 
 void AlteraTamanhoJanela (int w, int h)
 {

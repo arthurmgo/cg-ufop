@@ -651,9 +651,8 @@ void Timer(int value)
                 tiro.y0 = tiro.y;
                 tiro.z0 = tiro.z;
                 tiro.vel = tiro.vel*0.9;
-                tiro.pulo ++;
+                tiro.pulo ++; //Numero de Pulos
                 tiro.tempo = 0.0;
-
             }
 
             if (tiro.vel < 0.1)

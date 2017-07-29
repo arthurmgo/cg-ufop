@@ -129,3 +129,49 @@
 
 1307916834 c:\users\arthu\documents\github\cg-ufop\include\gl\freeglut_ext.h
 
+1500983842 source:f:\cg-ufop\main.cpp
+	<GL/gl.h>
+	<stdio.h>
+	<GL/glut.h>
+	<stdlib.h>
+	<cmath>
+	<iostream>
+	<ctime>
+
+1500787354 f:\cg-ufop\include\gl\glut.h
+	"freeglut.h"
+
+1500787354 f:\cg-ufop\include\gl\freeglut.h
+	"freeglut_std.h"
+	"freeglut_ext.h"
+
+1500787354 f:\cg-ufop\include\gl\freeglut_std.h
+	<windows.h>
+	<GL/gl.h>
+	<GL/glu.h>
+
+1500787354 f:\cg-ufop\include\gl\freeglut_ext.h
+
+1501212540 source:g:\cg-ufop\main.cpp
+	<GL/gl.h>
+	<stdio.h>
+	<GL/glut.h>
+	<stdlib.h>
+	<cmath>
+	<iostream>
+	<ctime>
+
+1500780154 g:\cg-ufop\include\gl\glut.h
+	"freeglut.h"
+
+1500780154 g:\cg-ufop\include\gl\freeglut.h
+	"freeglut_std.h"
+	"freeglut_ext.h"
+
+1500780154 g:\cg-ufop\include\gl\freeglut_std.h
+	<windows.h>
+	<GL/gl.h>
+	<GL/glu.h>
+
+1500780154 g:\cg-ufop\include\gl\freeglut_ext.h
+

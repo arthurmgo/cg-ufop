@@ -29,10 +29,13 @@ float forca = 1.0;
 int n = 1;
 
 double rotacaoVento;
-double intensidadeVento = 0.025;
+double intensidadeVento = 0.25;
 double intensidadeVentoz;
 double intensidadeVentox;
 
+int alvovis = 1;
+
+GLuint cube;
 
 typedef struct
 {
@@ -73,10 +76,46 @@ void Inicializa(void)
     srand(time(0));
     d_z = (25.0 * randomico()) + 25.0;
     d_x = (40.0 - (-40.0)) * randomico() + (-40.0);
-    rotacaoVento = 180.0 * randomico();
-
+    rotacaoVento = (45.0 - (-45.0) * randomico() + (-45.0));
+    //std::cout << rotacaoVento << std::endl;
+    //rotacaoVento = (45.0 - (-45.0) * randomico() + (-45.0);
 }
 
+//wavefront .obj loader code begins
+void loadObj()
+{
+    FILE *fp;
+    int read;
+    GLfloat x, y, z;
+    char ch;
+    cube=glGenLists(1);
+    fp=fopen("fggfdgfd.obj","r");
+    if (!fp)
+    {
+        printf("can't open file\n");
+        exit(1);
+    }
+    glPointSize(2.0);
+    glNewList(cube, GL_COMPILE);
+    {
+        glPushMatrix();
+        glTranslated(d_x, 0.0, -d_z);
+        glBegin(GL_POINTS);
+        while(!(feof(fp)))
+        {
+            read=fscanf(fp,"%c %f %f %f",&ch,&x,&y,&z);
+            if(read==4&&ch=='v')
+            {
+                glVertex3f(x,y,z);
+            }
+        }
+        glEnd();
+    }
+    glPopMatrix();
+    glEndList();
+    fclose(fp);
+}
+//wavefront .obj loader code ends here
 
 void ativaIluminacao (void)
 {
@@ -381,40 +420,63 @@ void DivisaoCampo()
 
 void Alvo()
 {
-    glPushMatrix();
+    if (alvovis == 1)
+    {
+        glPushMatrix();
 
-    glTranslated(d_x, 0.0, -d_z);
+        glTranslated(d_x, 0.0, -d_z);
+        glScaled(2.0, 4.0, 2.0);
 
-    glColor3f(0.0, 1.0, 1.0);
+        glColor3f(0.0, 1.0, 1.0);
 
-    glScaled(2.0, 4.0, 2.0);
+        glutSolidCube(1);
 
-    glutSolidCube(1);
+        glPopMatrix();
 
-    glPopMatrix();
+    }
+
+    else if(alvovis == 0)
+    {
+        d_z = (25.0 * randomico()) + 25.0;
+        d_x = (40.0 - (-40.0)) * randomico() + (-40.0);
+        alvovis = 1;
+        Alvo();
+
+
+    }
 
 }
 
 
 void MarcadorForca()
 {
-    glPushMatrix();
-    desativaIluminacao();
-    glTranslated(5.0, 5.0, 0.0);
+    //glMatrixMode(GL_PROJECTION);
+    //glPushMatrix();
+        //glLoadIdentity();
+        //glMatrixMode(GL_MODELVIEW);
+        glPushMatrix();
+            //glLoadIdentity();
+            //glViewport(0,0, 300, 100);
+            desativaIluminacao();
+            glTranslated(5.0, 4.0, 0.0);
 
-    glColor3f(1.0, 1.5, 0.0);
-    for(int i = 0; i<n ; i++)
-    {
-        glBegin(GL_QUADS);
-        glVertex3f(0.5,0.1*n,0.0);
-        glVertex3f(0.5,0.0,0.0);
-        glVertex3f(0.0,0.0,0.0);
-        glVertex3f(0.0,0.1*n,0.0);
-
-        glEnd();
-    }
-    ativaIluminacao();
-    glPopMatrix();
+            glColor3f(1.0, 1.5, 0.0);
+            for(int i = 0; i<n ; i++)
+            {
+                glBegin(GL_QUADS);
+                    glVertex3f(0.5,0.1*n,0.0);
+                    glVertex3f(0.5,0.0,0.0);
+                    glVertex3f(0.0,0.0,0.0);
+                    glVertex3f(0.0,0.1*n,0.0);
+                glEnd();
+            }
+            //glViewport(0, 0, 800, 800);
+            ativaIluminacao();
+        glPopMatrix();
+        //glMatrixMode(GL_PROJECTION);
+    //glPopMatrix();
+    //glMatrixMode(GL_MODELVIEW);
+    //glutSwapBuffers();
 }
 
 
@@ -472,12 +534,6 @@ void TerrenoBase()
 }
 
 
-void DestroiAlvo()
-{
-    std::cout << "Destruiu!!" << std::endl;
-}
-
-
 void Trajetoria(void)
 {
     float tempo = 0.0;
@@ -511,13 +567,8 @@ void Trajetoria(void)
         glVertex3f(x,y,z);
         tempo += 0.01;
 
-        if((x == d_x && z == d_z))
-        {
-            DestroiAlvo();
-        }
-
     }
-    while(y > 0);
+    while(tempo < 30);
     glEnd();
 }
 
@@ -583,25 +634,25 @@ void Teclado(unsigned char key, int x, int y)
 {
     if (key == 'a')
     {
-        rodarHori = rodarHori + 5;
+        rodarHori = rodarHori + 1;
         rodarHori = rodarHori%360;
     }
     if (key == 'd')
     {
-        rodarHori = rodarHori - 5;
+        rodarHori = rodarHori - 1;
         rodarHori = rodarHori%360;
     }
     if (key == 'w')
     {
-        rodarVert = rodarVert + 5;
+        rodarVert = rodarVert + 1;
         rodarVert = rodarVert%360;
     }
     if (key == 's')
     {
-        rodarVert = rodarVert - 5;
+        rodarVert = rodarVert - 1;
         rodarVert = rodarVert%360;
     }
-    if (key == 'e')
+    if (key == 'e' && !tiro.vis)
     {
         tiro.vis = true;
         tiro.tempo = 0.0;
@@ -635,17 +686,21 @@ void Teclado(unsigned char key, int x, int y)
     }
     if (key == '+')
     {
-        forca += 2.0;
+        if(forca < 30){
+        forca += 1.0;
         n++;
+        }
     }
     if (key == '-')
     {
-        forca -= 2.0;
+        if(forca > 0)
+        {
+        forca -= 1.0;
         n--;
+        }
 
     }
     glutPostRedisplay();
-
 }
 
 
@@ -655,11 +710,11 @@ void Timer(int value)
     {
         if(tiro.vel > 0.1)
         {
-            tiro.x =    tiro.x0  + tiro.vel*tiro.forcax*tiro.tempo /*+ tiro.ventox*/;
+            tiro.x =    tiro.x0  + tiro.vel*tiro.forcax*tiro.tempo + 1.0*tiro.tempo; // (0.5 ate 2.0) esse 1.0 é a intensidade do vento em x ... melhor gerar ele primeiro e depois vazer as contas8//+ tiro.ventox;
             tiro.y =    tiro.y0  + tiro.vel*tiro.forcay*tiro.tempo - 0.5*G*tiro.tempo*tiro.tempo;
-            tiro.z =    tiro.z0  + tiro.vel*tiro.forcaz*tiro.tempo /*+ tiro.ventoz*/;
-            tiro.ventox += intensidadeVentox;
-            tiro.ventoz += intensidadeVentoz;
+            tiro.z =    tiro.z0  + tiro.vel*tiro.forcaz*tiro.tempo + 1.0*tiro.tempo; //+ tiro.ventoz;
+            //tiro.ventox += intensidadeVentox;
+            //tiro.ventoz += intensidadeVentoz;
             if(tiro.y <0.2)
             {
                 printf("ANGULO: %f VELOCIDADE: %f\n",tiro.anguloy,tiro.vel);
@@ -677,14 +732,21 @@ void Timer(int value)
                 tiro.tempo = 0.0;
             }
 
-            if (tiro.vel < 0.1)
+            if (tiro.vel < 0.1 || tiro.z < -50)
             {
                 tiro.vis = false;
+            }
+
+            float d0 = 1.2;
+            float d1 = sqrt(pow((d_x - tiro.x), 2) + pow((1.0 - tiro.y), 2) + pow((-d_z - tiro.z), 2));
+            if(d1 < d0)
+            {
+                alvovis = 0;
+                //loadObj();
             }
         }
         tiro.tempo += 0.01;
     }
-
 
     glutTimerFunc(10,Timer,0);
     glutPostRedisplay();
@@ -718,3 +780,10 @@ int main(int argc, char** argv)
     glutMainLoop();
     return 0;
 }
+
+
+/*
+correções
+angulo baixo - entrando na terra
+vento - calculos
+blender*/

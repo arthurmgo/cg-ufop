@@ -74,6 +74,7 @@ void Inicializa(void)
     d_z = (25.0 * randomico()) + 25.0;
     d_x = (40.0 - (-40.0)) * randomico() + (-40.0);
 
+
     ventox = (2.0 - (-2.0)) * randomico() + (-2.0);
     ventoz = (2.0 - (0.0)) * randomico() + (0.0);
 }
@@ -423,21 +424,20 @@ void Alvo()
 
         glTranslated(d_x, 0.0, -d_z);
         glScaled(2.0, 4.0, 2.0);
-
         glColor3f(1.0, 0.0, 1.0);
+        glColor3f(0.0, 1.0, 1.0);
 
         glutSolidCube(1);
 
         glPopMatrix();
     }
-
     else if(alvovis == 0)
     {
+        PlaySound("C:\\temp\\sound_test.wav", NULL, SND_FILENAME);
         d_z = (25.0 * randomico()) + 25.0;
         d_x = (40.0 - (-40.0)) * randomico() + (-40.0);
         alvovis = 1;
         Alvo();
-
     }
 
 }
@@ -706,6 +706,7 @@ void Timer(int value)
     {
         if(tiro.vel > 0.1)
         {
+
             tiro.x =    tiro.x0  + tiro.vel*tiro.forcax*tiro.tempo + ventox*tiro.tempo;
             tiro.y =    tiro.y0  + tiro.vel*tiro.forcay*tiro.tempo - 0.5*G*tiro.tempo*tiro.tempo;
             tiro.z =    tiro.z0  + tiro.vel*tiro.forcaz*tiro.tempo + (-1)*ventoz*tiro.tempo;
@@ -738,6 +739,14 @@ void Timer(int value)
             if(d1 < d0)
             {
                 alvovis = 0;
+            }
+
+            float d0 = 1.2;
+            float d1 = sqrt(pow((d_x - tiro.x), 2) + pow((1.0 - tiro.y), 2) + pow((-d_z - tiro.z), 2));
+            if(d1 < d0)
+            {
+                alvovis = 0;
+                //loadObj();
             }
         }
         tiro.tempo += 0.01;
@@ -775,7 +784,6 @@ int main(int argc, char** argv)
     glutMainLoop();
     return 0;
 }
-
 
 
 /* PARTICULAS - COLOCAR!!!

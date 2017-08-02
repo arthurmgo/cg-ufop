@@ -41,20 +41,30 @@ typedef struct
     float x;
     float y;
     float z;
+
     float x0;
     float y0;
     float z0;
+
     bool vis;
+
     float forcax;
     float forcay;
     float forcaz;
+
     float tempo;
+
     float vel;
-    double ventox;
-    double ventoz;
+
+
     int pulo;
-    float yAuxiliar;
-    float anguloy;
+
+    float xMax;
+    float yMax;
+    float zMax;
+
+    float norma;
+   // float anguloy;
 
 } Bola;
 
@@ -80,7 +90,7 @@ void Inicializa(void)
     ventox = (2.0 - (-2.0)) * randomico() + (-2.0);
     ventoz = (2.0 - (0.0)) * randomico() + (0.0);
 }
-
+/*
 //wavefront .obj loader code begins
 void loadObj()
 {
@@ -116,7 +126,7 @@ void loadObj()
     fclose(fp);
 }
 //wavefront .obj loader code ends here
-
+*/
 void ativaIluminacao (void)
 {
     GLfloat luzAmbiente[4]= {0.2,0.2,0.2,1.0};
@@ -435,6 +445,8 @@ void Alvo()
     }
     else if(alvovis == 0)
     {
+
+        PlaySound("C:\\temp\\sound_test.wav", NULL, SND_FILENAME);
         d_z = (25.0 * randomico()) + 25.0;
         d_x = (40.0 - (-40.0)) * randomico() + (-40.0);
         alvovis = 1;
@@ -649,7 +661,6 @@ void Teclado(unsigned char key, int x, int y)
         tiro.vis = true;
         tiro.tempo = 0.0;
 
-        tiro.anguloy = rodarVert;
 
         float raio = 2.0*cos((rodarVert*M_PI)/180.0);
 
@@ -659,7 +670,7 @@ void Teclado(unsigned char key, int x, int y)
 
         float norma = sqrt(tiro.x*tiro.x + tiro.y*tiro.y + tiro.z*tiro.z);
 
-        tiro.yAuxiliar = ((2.0*sin(((rodarVert+45)*M_PI)/180.0))/norma);
+        tiro.norma = norma;
 
 
         tiro.forcax = tiro.x/norma;
@@ -674,8 +685,9 @@ void Teclado(unsigned char key, int x, int y)
         tiro.y0 = tiro.y;
         tiro.z0 = tiro.z;
 
-        tiro.ventox = 0.0;
-        tiro.ventoz = 0.0;
+        tiro.xMax = 0.0;
+        tiro.yMax = 0.0;
+        tiro.zMax = 0.0;
 
         tiro.pulo = 0;
         PlaySound("sounds\\bomba.wav", NULL, 1);
@@ -703,6 +715,9 @@ void Teclado(unsigned char key, int x, int y)
 
 void Timer(int value)
 {
+    float angulo;
+    float distancia;
+
     if(tiro.vis)
     {
         if(tiro.vel > 0.1)
@@ -712,19 +727,23 @@ void Timer(int value)
             tiro.y =    tiro.y0  + tiro.vel*tiro.forcay*tiro.tempo - 0.5*G*tiro.tempo*tiro.tempo;
             tiro.z =    tiro.z0  + tiro.vel*tiro.forcaz*tiro.tempo + (-1)*ventoz*tiro.tempo;
 
+            if(tiro.y > tiro.yMax){
+                tiro.yMax = tiro.y;
+                tiro.xMax = tiro.x;
+                tiro.zMax = tiro.z;
+            }
+
             if(tiro.y <0.2)
             {
-                if(tiro.pulo == 0 && tiro.anguloy <= 0)
-                {
-                    tiro.forcay = tiro.yAuxiliar;
-                }
+                distancia = sqrt((tiro.x - tiro.xMax)*(tiro.x - tiro.xMax) + (tiro.z - tiro.zMax)*(tiro.z - tiro.zMax));
+                angulo = atan(tiro.yMax/(distancia));
+
+                tiro.forcay = ((2.0*sin(angulo))/tiro.norma);
                 tiro.x0 = tiro.x;
                 tiro.y0 = tiro.y;
                 tiro.z0 = tiro.z;
-                tiro.ventox = 0.0;
-                tiro.ventoz = 0.0;
                 tiro.vel = tiro.vel*0.9;
-                tiro.pulo++; //Numero de Pulos
+                tiro.pulo++;
                 tiro.tempo = 0.0;
             }
 
@@ -746,6 +765,7 @@ void Timer(int value)
                 PlaySound("sounds\\quebrando.wav", NULL, 1);
                 cont++;
             }
+
         }
         tiro.tempo += 0.01;
     }

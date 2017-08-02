@@ -17,6 +17,7 @@ int rodarApa = 0.0;
 float rodarHaste = 0.0;
 float soma = 0.2;
 
+int cont = 0;
 
 int rodarHori = 0;
 int rodarVert = 0;
@@ -677,7 +678,7 @@ void Teclado(unsigned char key, int x, int y)
         tiro.ventoz = 0.0;
 
         tiro.pulo = 0;
-        PlaySound("C:\\bomba.wav", NULL, 1);
+        PlaySound("sounds\\bomba.wav", NULL, 1);
     }
     if (key == '+')
     {
@@ -730,7 +731,9 @@ void Timer(int value)
             if ((tiro.vel < 0.1 || tiro.z < -50 || tiro.x < -50 || tiro.x > 50) && tiro.y < 0.2)
             {
                 tiro.vis = false;
-                PlaySound("C:\\errou.wav", NULL, 1);
+                if(cont == 0)
+                    PlaySound("sounds\\errou.wav", NULL, 1);
+                cont = 0;
                 ventox = (2.0 - (-2.0)) * randomico() + (-2.0);
                 ventoz = (2.0 - (0.0)) * randomico() + (0.0);
             }
@@ -740,6 +743,8 @@ void Timer(int value)
             if(d1 < d0)
             {
                 alvovis = 0;
+                PlaySound("sounds\\quebrando.wav", NULL, 1);
+                cont++;
             }
         }
         tiro.tempo += 0.01;
@@ -784,5 +789,4 @@ VERIFICAR COR BARRA DE FORÇA
 VIEWPORT
 ANGULO BOLA QUICAR
 ESTADIO
-SOM
 CAMERA */

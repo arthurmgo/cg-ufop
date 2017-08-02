@@ -10,6 +10,7 @@
 
 #define G 9.8
 #define randomico() ((float) rand()/ RAND_MAX) //Numero aleatório entre 0 e1
+#define MAXPARTICULAS  5000
 
 GLfloat angle = 60, fAspect;
 int rodar = 0.0;
@@ -38,37 +39,104 @@ GLuint cube;
 
 typedef struct
 {
+    bool vis;
     float x;
     float y;
     float z;
-
     float x0;
     float y0;
     float z0;
-
-    bool vis;
-
     float forcax;
     float forcay;
     float forcaz;
-
-    float tempo;
-
-    float vel;
-
-
-    int pulo;
-
     float xMax;
     float yMax;
     float zMax;
-
+    float tempo;
+    float vel;
     float norma;
-   // float anguloy;
 
 } Bola;
 
+typedef struct
+{
+    bool vis;
+    GLfloat posicao[3];
+    GLfloat velocidade[3];
+    GLfloat tempoVida;
+} part;
+
+part Particulas[MAXPARTICULAS];
+
 Bola tiro;
+
+void conceberParticulas(int i)
+{
+    GLfloat raio = 0.04 * randomico();
+    GLfloat alpha = 2 * M_PI * randomico();
+    GLfloat beta = 1 *  M_PI * randomico();
+
+    Particulas[i].posicao[0] = d_x;
+    Particulas[i].posicao[1] = 1.0;
+    Particulas[i].posicao[2] = -d_z;
+
+    Particulas[i].vis = false;
+    Particulas[i].velocidade[0] = raio * sin(beta)* cos(alpha);
+    Particulas[i].velocidade[1] = raio * sin(beta)* sin(alpha);;
+    Particulas[i].velocidade[2] = raio * cos(beta);
+
+    Particulas[i].tempoVida = 2.0 * randomico();
+
+}/*Fim conveberParticulas*/
+
+void extinguirParticulas(int i)
+{
+    if (Particulas[i].tempoVida < 0.01)
+    {
+        Particulas[i].vis = false;
+    }
+
+}/*Fim extinguirParticulas*/
+
+void iniciaParticulas(void)
+{
+    for(int i = 0; i< MAXPARTICULAS; i++)
+    {
+        conceberParticulas(i);
+        Particulas[i].vis = true;
+    }/*Fim do for*/
+}/*Fim Inicia Particulas*/
+
+void desenhaParticulas(void)
+{
+    //glClear(GL_COLOR_BUFFER_BIT);
+    //glDisable(GL_DEPTH_TEST);//"Rastro"
+    glEnable(GL_BLEND);//Habilita a transparência
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE);//Ativa a Transparência
+
+    glPointSize(2.0);
+    glBegin(GL_POINTS);
+    for(int i = 0; i<MAXPARTICULAS; i++)
+    {
+        glColor4f(0.0, 1.0, 1.0,1.0);
+        if(Particulas[i].vis)
+        {
+            glVertex3f(Particulas[i].posicao[0], Particulas[i].posicao[1], Particulas[i].posicao[2]);
+
+            Particulas[i].posicao[0] += Particulas[i].velocidade[0];
+            Particulas[i].posicao[1] += Particulas[i].velocidade[1];
+            Particulas[i].posicao[2] += Particulas[i].velocidade[2];
+
+            Particulas[i].tempoVida -= 0.01;
+        }
+
+        extinguirParticulas(i);
+    }/*Fim do For*/
+    glEnd();
+    glDisable(GL_BLEND);
+    //glutSwapBuffers();
+}
+
 
 void Inicializa(void)
 {
@@ -177,7 +245,7 @@ void desativaIluminacao(void)
 void Canon()
 {
 
-    glColor3f(0.75, 0.75 , 0.75);
+    glColor3f(0.75, 0.75, 0.75);
     glPushMatrix();
 
     glutWireSphere(0.5, 10, 50);
@@ -185,7 +253,7 @@ void Canon()
 
     GLUquadricObj* q = gluNewQuadric();
     gluQuadricDrawStyle(q,GLU_LINE);
-    gluCylinder(q, 0.2, 0.2, 2.0, 50 ,10);
+    gluCylinder(q, 0.2, 0.2, 2.0, 50,10);
     gluDeleteQuadric(q);
     glPopMatrix();
 
@@ -437,7 +505,6 @@ void Alvo()
 
         glTranslated(d_x, 0.0, -d_z);
         glScaled(2.0, 4.0, 2.0);
-        glColor3f(1.0, 0.0, 1.0);
         glColor3f(0.0, 1.0, 1.0);
 
         glutSolidCube(1);
@@ -446,6 +513,7 @@ void Alvo()
     }
     else if(alvovis == 0)
     {
+        iniciaParticulas();
         d_z = (25.0 * randomico()) + 25.0;
         d_x = (40.0 - (-40.0)) * randomico() + (-40.0);
         alvovis = 1;
@@ -464,7 +532,7 @@ void MarcadorForca()
     if(forca <= 13)
         glColor3f(forca/13, 1.0, 0.0);
     else
-        glColor3f(1.0,(1.0 - forca/25) , 0.0);
+        glColor3f(1.0,(1.0 - forca/25), 0.0);
 
     glPushMatrix();
     for(int i = 0; i<n ; i++)
@@ -523,11 +591,11 @@ void TerrenoBase()
 
     Alvo();
 
-    glColor3f(0.3, 0.3 , 0.3);
+    glColor3f(0.3, 0.3, 0.3);
     glRotated(-90, 1.0, 0.0, 0.0);
     GLUquadricObj* q = gluNewQuadric();
     gluQuadricDrawStyle(q,GLU_LINE);
-    gluCylinder(q, 0.5, 0.5, 2.0, 70 ,70);
+    gluCylinder(q, 0.5, 0.5, 2.0, 70,70);
     gluDeleteQuadric(q);
 
     glPopMatrix();
@@ -599,6 +667,9 @@ void Desenha(void)
         Trajetoria();
     }
 
+    //if (alvovis == 0)
+    desenhaParticulas();
+
     glColor3f(0.0, 0.0,0.0);
     if(tiro.vis)
     {
@@ -630,22 +701,22 @@ void AlteraTamanhoJanela (int w, int h)
 
 void Teclado(unsigned char key, int x, int y)
 {
-    if (key == 'a')
+    if (key == 'a' && rodarHori < 90)
     {
         rodarHori = rodarHori + 1;
         rodarHori = rodarHori%360;
     }
-    if (key == 'd')
+    if (key == 'd' && rodarHori > -90)
     {
         rodarHori = rodarHori - 1;
         rodarHori = rodarHori%360;
     }
-    if (key == 'w')
+    if (key == 'w' && rodarVert < 90)
     {
         rodarVert = rodarVert + 1;
         rodarVert = rodarVert%360;
     }
-    if (key == 's')
+    if (key == 's' && rodarVert > -45)
     {
         rodarVert = rodarVert - 1;
         rodarVert = rodarVert%360;
@@ -683,7 +754,6 @@ void Teclado(unsigned char key, int x, int y)
         tiro.yMax = 0.0;
         tiro.zMax = 0.0;
 
-        tiro.pulo = 0;
         PlaySound("sounds\\bomba.wav", NULL, 1);
     }
     if (key == '+')
@@ -721,7 +791,8 @@ void Timer(int value)
             tiro.y =    tiro.y0  + tiro.vel*tiro.forcay*tiro.tempo - 0.5*G*tiro.tempo*tiro.tempo;
             tiro.z =    tiro.z0  + tiro.vel*tiro.forcaz*tiro.tempo + (-1)*ventoz*tiro.tempo;
 
-            if(tiro.y > tiro.yMax){
+            if(tiro.y > tiro.yMax)
+            {
                 tiro.yMax = tiro.y;
                 tiro.xMax = tiro.x;
                 tiro.zMax = tiro.z;
@@ -737,7 +808,6 @@ void Timer(int value)
                 tiro.y0 = tiro.y;
                 tiro.z0 = tiro.z;
                 tiro.vel = tiro.vel*0.9;
-                tiro.pulo++;
                 tiro.tempo = 0.0;
             }
 

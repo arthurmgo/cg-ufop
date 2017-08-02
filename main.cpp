@@ -89,7 +89,7 @@ void Inicializa(void)
     ventox = (2.0 - (-2.0)) * randomico() + (-2.0);
     ventoz = (2.0 - (0.0)) * randomico() + (0.0);
 }
-
+/*
 //wavefront .obj loader code begins
 void loadObj()
 {
@@ -125,7 +125,7 @@ void loadObj()
     fclose(fp);
 }
 //wavefront .obj loader code ends here
-
+*/
 void ativaIluminacao (void)
 {
     GLfloat luzAmbiente[4]= {0.2,0.2,0.2,1.0};
@@ -444,13 +444,8 @@ void Alvo()
     }
     else if(alvovis == 0)
     {
-<<<<<<< HEAD
-<<<<<<< HEAD
-        //PlaySound("C:\\temp\\sound_test.wav", NULL, SND_FILENAME);
-=======
->>>>>>> 8041d447771e89dbb8d653697b47e657f6b3f19c
-=======
->>>>>>> 8041d447771e89dbb8d653697b47e657f6b3f19c
+
+        PlaySound("C:\\temp\\sound_test.wav", NULL, SND_FILENAME);
         d_z = (25.0 * randomico()) + 25.0;
         d_x = (40.0 - (-40.0)) * randomico() + (-40.0);
         alvovis = 1;
@@ -765,13 +760,7 @@ void Timer(int value)
             {
                 alvovis = 0;
             }
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-=======
->>>>>>> 8041d447771e89dbb8d653697b47e657f6b3f19c
-=======
->>>>>>> 8041d447771e89dbb8d653697b47e657f6b3f19c
         }
         tiro.tempo += 0.01;
     }

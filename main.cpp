@@ -5,10 +5,9 @@
 #include <cmath>
 #include <iostream>
 #include <ctime>
+#include <windows.h>
 
 #define G 9.8
-
-
 #define randomico() ((float) rand()/ RAND_MAX) //Numero aleatório entre 0 e1
 
 GLfloat angle = 60, fAspect;
@@ -28,11 +27,12 @@ float forca = 1.0;
 
 int n = 1;
 
-double rotacaoVento;
-double intensidadeVento = 0.025;
-double intensidadeVentoz;
-double intensidadeVentox;
+float ventox;
+float ventoz;
 
+int alvovis = 1;
+
+GLuint cube;
 
 typedef struct
 {
@@ -48,11 +48,11 @@ typedef struct
     float forcaz;
     float tempo;
     float vel;
-    float anguloy;
-    float anguloxz;
     double ventox;
     double ventoz;
     int pulo;
+    float yAuxiliar;
+    float anguloy;
 
 } Bola;
 
@@ -73,10 +73,46 @@ void Inicializa(void)
     srand(time(0));
     d_z = (25.0 * randomico()) + 25.0;
     d_x = (40.0 - (-40.0)) * randomico() + (-40.0);
-    rotacaoVento = 180.0 * randomico();
 
+    ventox = (2.0 - (-2.0)) * randomico() + (-2.0);
+    ventoz = (2.0 - (0.0)) * randomico() + (0.0);
 }
 
+//wavefront .obj loader code begins
+void loadObj()
+{
+    FILE *fp;
+    int read;
+    GLfloat x, y, z;
+    char ch;
+    cube=glGenLists(1);
+    fp=fopen("fggfdgfd.obj","r");
+    if (!fp)
+    {
+        printf("can't open file\n");
+        exit(1);
+    }
+    glPointSize(2.0);
+    glNewList(cube, GL_COMPILE);
+    {
+        glPushMatrix();
+        glTranslated(d_x, 0.0, -d_z);
+        glBegin(GL_POINTS);
+        while(!(feof(fp)))
+        {
+            read=fscanf(fp,"%c %f %f %f",&ch,&x,&y,&z);
+            if(read==4&&ch=='v')
+            {
+                glVertex3f(x,y,z);
+            }
+        }
+        glEnd();
+    }
+    glPopMatrix();
+    glEndList();
+    fclose(fp);
+}
+//wavefront .obj loader code ends here
 
 void ativaIluminacao (void)
 {
@@ -127,15 +163,15 @@ void desativaIluminacao(void)
 void Canon()
 {
 
-    glColor3f(0.5, 0.0,0.0);
+    glColor3f(0.75, 0.75 , 0.75);
     glPushMatrix();
 
-    glutWireSphere(0.5, 10, 10);
+    glutWireSphere(0.5, 10, 50);
     glRotated(180.0,1,0,0);
 
     GLUquadricObj* q = gluNewQuadric();
     gluQuadricDrawStyle(q,GLU_LINE);
-    gluCylinder(q, 0.2, 0.2, 2.0, 5,5);
+    gluCylinder(q, 0.2, 0.2, 2.0, 50 ,10);
     gluDeleteQuadric(q);
     glPopMatrix();
 
@@ -147,7 +183,7 @@ void DivisaoCampo()
     glPushMatrix();
     glTranslated(0.0, 0.0, -50.0); //-50
 
-    glColor3f(0.5, 0.5, 0.5);
+    glColor3f(0.60, 0.80, 0.19);
     glBegin(GL_QUADS);
     glVertex3f(50.0,0.0,5.0);
     glVertex3f(50.0,0.0,0.0);
@@ -157,7 +193,7 @@ void DivisaoCampo()
 
     glTranslated(0.0, 0.0, 5.0); //-45
 
-    glColor3f(0.0, 0.5, 0.0);
+    glColor3f(0.41, 0.55, 0.13);
     glBegin(GL_QUADS);
     glVertex3f(50.0,0.0,5.0);
     glVertex3f(50.0,0.0,0.0);
@@ -167,7 +203,7 @@ void DivisaoCampo()
 
     glTranslated(0.0, 0.0, 5.0); //-40
 
-    glColor3f(0.5, 0.5, 0.5);
+    glColor3f(0.60, 0.80, 0.19);
     glBegin(GL_QUADS);
     glVertex3f(50.0,0.0,5.0);
     glVertex3f(50.0,0.0,0.0);
@@ -177,7 +213,7 @@ void DivisaoCampo()
 
     glTranslated(0.0, 0.0, 5.0); //-35
 
-    glColor3f(0.0, 0.5, 0.0);
+    glColor3f(0.41, 0.55, 0.13);
     glBegin(GL_QUADS);
     glVertex3f(50.0,0.0,5.0);
     glVertex3f(50.0,0.0,0.0);
@@ -187,7 +223,7 @@ void DivisaoCampo()
 
     glTranslated(0.0, 0.0, 5.0); //-30
 
-    glColor3f(0.5, 0.5, 0.5);
+    glColor3f(0.60, 0.80, 0.19);
     glBegin(GL_QUADS);
     glVertex3f(50.0,0.0,5.0);
     glVertex3f(50.0,0.0,0.0);
@@ -197,7 +233,7 @@ void DivisaoCampo()
 
     glTranslated(0.0, 0.0, 5.0); //-35
 
-    glColor3f(0.0, 0.5, 0.0);
+    glColor3f(0.41, 0.55, 0.13);
     glBegin(GL_QUADS);
     glVertex3f(50.0,0.0,5.0);
     glVertex3f(50.0,0.0,0.0);
@@ -207,7 +243,7 @@ void DivisaoCampo()
 
     glTranslated(0.0, 0.0, 5.0); //-30
 
-    glColor3f(0.5, 0.5, 0.5);
+    glColor3f(0.60, 0.80, 0.19);
     glBegin(GL_QUADS);
     glVertex3f(50.0,0.0,5.0);
     glVertex3f(50.0,0.0,0.0);
@@ -217,7 +253,7 @@ void DivisaoCampo()
 
     glTranslated(0.0, 0.0, 5.0); //-25
 
-    glColor3f(0.0, 0.5, 0.0);
+    glColor3f(0.41, 0.55, 0.13);
     glBegin(GL_QUADS);
     glVertex3f(50.0,0.0,5.0);
     glVertex3f(50.0,0.0,0.0);
@@ -227,7 +263,7 @@ void DivisaoCampo()
 
     glTranslated(0.0, 0.0, 5.0); //-20
 
-    glColor3f(0.5, 0.5, 0.5);
+    glColor3f(0.60, 0.80, 0.19);
     glBegin(GL_QUADS);
     glVertex3f(50.0,0.0,5.0);
     glVertex3f(50.0,0.0,0.0);
@@ -237,7 +273,7 @@ void DivisaoCampo()
 
     glTranslated(0.0, 0.0, 5.0); //-15
 
-    glColor3f(0.0, 0.5, 0.0);
+    glColor3f(0.41, 0.55, 0.13);
     glBegin(GL_QUADS);
     glVertex3f(50.0,0.0,5.0);
     glVertex3f(50.0,0.0,0.0);
@@ -247,7 +283,7 @@ void DivisaoCampo()
 
     glTranslated(0.0, 0.0, 5.0); //-10
 
-    glColor3f(0.5, 0.5, 0.5);
+    glColor3f(0.60, 0.80, 0.19);
     glBegin(GL_QUADS);
     glVertex3f(50.0,0.0,5.0);
     glVertex3f(50.0,0.0,0.0);
@@ -257,7 +293,7 @@ void DivisaoCampo()
 
     glTranslated(0.5, 0.5, 5.0); //-5
 
-    glColor3f(0.0, 0.5, 0.0);
+    glColor3f(0.41, 0.55, 0.13);
     glBegin(GL_QUADS);
     glVertex3f(50.0,0.0,5.0);
     glVertex3f(50.0,0.0,0.0);
@@ -267,7 +303,7 @@ void DivisaoCampo()
 
     glTranslated(0.0, 0.0, 5.0); //0
 
-    glColor3f(0.5, 0.5, 0.5);
+    glColor3f(0.60, 0.80, 0.19);
     glBegin(GL_QUADS);
     glVertex3f(50.0,0.0,5.0);
     glVertex3f(50.0,0.0,0.0);
@@ -277,7 +313,7 @@ void DivisaoCampo()
 
     glTranslated(0.0, 0.0, 5.0); //5
 
-    glColor3f(0.0, 0.5, 0.0);
+    glColor3f(0.41, 0.55, 0.13);
     glBegin(GL_QUADS);
     glVertex3f(50.0,0.0,5.0);
     glVertex3f(50.0,0.0,0.0);
@@ -287,7 +323,7 @@ void DivisaoCampo()
 
     glTranslated(0.0, 0.0, 5.0); //10
 
-    glColor3f(0.5, 0.5, 0.5);
+    glColor3f(0.60, 0.80, 0.19);
     glBegin(GL_QUADS);
     glVertex3f(50.0,0.0,5.0);
     glVertex3f(50.0,0.0,0.0);
@@ -297,7 +333,7 @@ void DivisaoCampo()
 
     glTranslated(0.0, 0.0, 5.0); //15
 
-    glColor3f(0.0, 0.0, 0.0);
+    glColor3f(0.41, 0.55, 0.13);
     glBegin(GL_QUADS);
     glVertex3f(50.0,0.0,5.0);
     glVertex3f(50.0,0.0,0.0);
@@ -307,7 +343,7 @@ void DivisaoCampo()
 
     glTranslated(0.0, 0.0, 5.0); //20
 
-    glColor3f(0.5, 0.5, 0.5);
+    glColor3f(0.60, 0.80, 0.19);
     glBegin(GL_QUADS);
     glVertex3f(50.0,0.0,5.0);
     glVertex3f(50.0,0.0,0.0);
@@ -317,7 +353,7 @@ void DivisaoCampo()
 
     glTranslated(0.0, 0.0, 5.0); //25
 
-    glColor3f(0.0, 0.5, 0.0);
+    glColor3f(0.41, 0.55, 0.13);
     glBegin(GL_QUADS);
     glVertex3f(50.0,0.0,5.0);
     glVertex3f(50.0,0.0,0.0);
@@ -327,7 +363,7 @@ void DivisaoCampo()
 
     glTranslated(0.0, 0.0, 5.0); //30
 
-    glColor3f(0.5, 0.5, 0.5);
+    glColor3f(0.60, 0.80, 0.19);
     glBegin(GL_QUADS);
     glVertex3f(50.0,0.0,5.0);
     glVertex3f(50.0,0.0,0.0);
@@ -337,7 +373,7 @@ void DivisaoCampo()
 
     glTranslated(0.0, 0.0, 5.0); //35
 
-    glColor3f(0.0, 0.5, 0.0);
+    glColor3f(0.41, 0.55, 0.13);
     glBegin(GL_QUADS);
     glVertex3f(50.0,0.0,5.0);
     glVertex3f(50.0,0.0,0.0);
@@ -347,7 +383,7 @@ void DivisaoCampo()
 
     glTranslated(0.0, 0.0, 5.0); //40
 
-    glColor3f(0.5, 0.5, 0.5);
+    glColor3f(0.60, 0.80, 0.19);
     glBegin(GL_QUADS);
     glVertex3f(50.0,0.0,5.0);
     glVertex3f(50.0,0.0,0.0);
@@ -357,7 +393,7 @@ void DivisaoCampo()
 
     glTranslated(0.0, 0.0, 10.0); //45
 
-    glColor3f(0.0, 0.5, 0.0);
+    glColor3f(0.41, 0.55, 0.13);
     glBegin(GL_QUADS);
     glVertex3f(50.0,0.0,5.0);
     glVertex3f(50.0,0.0,0.0);
@@ -367,7 +403,7 @@ void DivisaoCampo()
 
     glTranslated(0.0, 0.0, 5.0); //50
 
-    glColor3f(0.5, 0.5, 0.5);
+    glColor3f(0.60, 0.80, 0.19);
     glBegin(GL_QUADS);
     glVertex3f(50.0,0.0,5.0);
     glVertex3f(50.0,0.0,0.0);
@@ -381,17 +417,28 @@ void DivisaoCampo()
 
 void Alvo()
 {
-    glPushMatrix();
+    if (alvovis == 1)
+    {
+        glPushMatrix();
 
-    glTranslated(d_x, 0.0, -d_z);
+        glTranslated(d_x, 0.0, -d_z);
+        glScaled(2.0, 4.0, 2.0);
 
-    glColor3f(0.0, 1.0, 1.0);
+        glColor3f(1.0, 0.0, 1.0);
 
-    glScaled(2.0, 4.0, 2.0);
+        glutSolidCube(1);
 
-    glutSolidCube(1);
+        glPopMatrix();
+    }
 
-    glPopMatrix();
+    else if(alvovis == 0)
+    {
+        d_z = (25.0 * randomico()) + 25.0;
+        d_x = (40.0 - (-40.0)) * randomico() + (-40.0);
+        alvovis = 1;
+        Alvo();
+
+    }
 
 }
 
@@ -400,9 +447,15 @@ void MarcadorForca()
 {
     glPushMatrix();
     desativaIluminacao();
-    glTranslated(5.0, 5.0, 0.0);
+    glTranslated(5.0, 4.0, 0.0);
+    glRotated(2.5, 0.0, 0.0, 1.0);
 
-    glColor3f(1.0, 1.5, 0.0);
+    if(forca <= 13)
+        glColor3f(forca/13, 1.0, 0.0);
+    else
+        glColor3f(1.0,(1.0 - forca/25) , 0.0);
+
+    glPushMatrix();
     for(int i = 0; i<n ; i++)
     {
         glBegin(GL_QUADS);
@@ -410,9 +463,9 @@ void MarcadorForca()
         glVertex3f(0.5,0.0,0.0);
         glVertex3f(0.0,0.0,0.0);
         glVertex3f(0.0,0.1*n,0.0);
-
         glEnd();
     }
+    glPopMatrix();
     ativaIluminacao();
     glPopMatrix();
 }
@@ -424,10 +477,17 @@ void GeraVento()
 
     desativaIluminacao();
 
+    float v = sqrt(pow(ventox,2)+ pow(ventoz,2));
+
+    float angulo = acos(ventox/v);
+
+    float ang = ((angulo*180)/M_PI);
+
     glTranslated(-5.0, 5.0, 0.0);
-    glRotated(rotacaoVento, 0.0, 1.0, 0.0);
-    glRotated(290.0, 1.0, 0.0, 0.0);
-    glColor3f(0.0, 0.0, 0.5);
+
+    glRotated(-90, 0.0, 0.0, 1.0);
+    glRotated(ang, 0.0, 0.0, 1.0);
+    glColor3f(1.0, 0.41, 0.70);
 
     glBegin(GL_QUADS);
     glVertex3f(0.1,0.5,0.0);
@@ -441,11 +501,6 @@ void GeraVento()
     glVertex3f(0.05,0.7,0);
     glVertex3f(-0.1,0.5,0);
     glEnd();
-
-    std::cout << rotacaoVento << std::endl;
-
-    intensidadeVentoz = intensidadeVento*sin(rotacaoVento);
-    intensidadeVentox = intensidadeVento*cos(rotacaoVento);
 
     ativaIluminacao();
     glPopMatrix();
@@ -461,20 +516,14 @@ void TerrenoBase()
 
     Alvo();
 
-    glColor3f(1.0, 0.0,0.0);
-
-    glColor3f(0.5, 0.0,0.0);
-
-    glScaled(1.0, 4.0, 1.0);
-    glutWireCube(1);
+    glColor3f(0.3, 0.3 , 0.3);
+    glRotated(-90, 1.0, 0.0, 0.0);
+    GLUquadricObj* q = gluNewQuadric();
+    gluQuadricDrawStyle(q,GLU_LINE);
+    gluCylinder(q, 0.5, 0.5, 2.0, 70 ,70);
+    gluDeleteQuadric(q);
 
     glPopMatrix();
-}
-
-
-void DestroiAlvo()
-{
-    std::cout << "Destruiu!!" << std::endl;
 }
 
 
@@ -510,21 +559,15 @@ void Trajetoria(void)
         z =    z0  + forca*forcaz*tempo;
         glVertex3f(x,y,z);
         tempo += 0.01;
-
-        if((x == d_x && z == d_z))
-        {
-            DestroiAlvo();
-        }
-
     }
-    while(y > 0);
+    while(tempo < 30);
     glEnd();
 }
 
 
 void Desenha(void)
 {
-    glClearColor (1.0, 1.0, 1.0, 0.0);
+    glClearColor (0.52, 0.80, 0.98, 0.0);
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glMatrixMode(GL_MODELVIEW);
@@ -554,7 +597,6 @@ void Desenha(void)
     {
         glPushMatrix();
         glTranslated(tiro.x, tiro.y, tiro.z);
-        //glRotated(90.0, 1.0, 0.0, 0.0);
         glutSolidSphere(0.2, 10, 10);
         glPopMatrix();
     }
@@ -583,28 +625,30 @@ void Teclado(unsigned char key, int x, int y)
 {
     if (key == 'a')
     {
-        rodarHori = rodarHori + 5;
+        rodarHori = rodarHori + 1;
         rodarHori = rodarHori%360;
     }
     if (key == 'd')
     {
-        rodarHori = rodarHori - 5;
+        rodarHori = rodarHori - 1;
         rodarHori = rodarHori%360;
     }
     if (key == 'w')
     {
-        rodarVert = rodarVert + 5;
+        rodarVert = rodarVert + 1;
         rodarVert = rodarVert%360;
     }
     if (key == 's')
     {
-        rodarVert = rodarVert - 5;
+        rodarVert = rodarVert - 1;
         rodarVert = rodarVert%360;
     }
-    if (key == 'e')
+    if (key == 'e' && !tiro.vis)
     {
         tiro.vis = true;
         tiro.tempo = 0.0;
+
+        tiro.anguloy = rodarVert;
 
         float raio = 2.0*cos((rodarVert*M_PI)/180.0);
 
@@ -613,6 +657,9 @@ void Teclado(unsigned char key, int x, int y)
         tiro.z = (-1.0*raio*cos((rodarHori*M_PI)/180.0));
 
         float norma = sqrt(tiro.x*tiro.x + tiro.y*tiro.y + tiro.z*tiro.z);
+
+        tiro.yAuxiliar = ((2.0*sin(((rodarVert+45)*M_PI)/180.0))/norma);
+
 
         tiro.forcax = tiro.x/norma;
         tiro.forcay = tiro.y/norma;
@@ -630,22 +677,26 @@ void Teclado(unsigned char key, int x, int y)
         tiro.ventoz = 0.0;
 
         tiro.pulo = 0;
-        tiro.anguloy = (rodarVert*M_PI)/180.0;
-        tiro.anguloxz = (rodarHori*M_PI)/180.0;
+
     }
     if (key == '+')
     {
-        forca += 2.0;
-        n++;
+        if(forca < 25)
+        {
+            forca += 1.0;
+            n++;
+        }
     }
     if (key == '-')
     {
-        forca -= 2.0;
-        n--;
+        if(forca > 1)
+        {
+            forca -= 1.0;
+            n--;
+        }
 
     }
     glutPostRedisplay();
-
 }
 
 
@@ -655,17 +706,15 @@ void Timer(int value)
     {
         if(tiro.vel > 0.1)
         {
-            tiro.x =    tiro.x0  + tiro.vel*tiro.forcax*tiro.tempo /*+ tiro.ventox*/;
+            tiro.x =    tiro.x0  + tiro.vel*tiro.forcax*tiro.tempo + ventox*tiro.tempo;
             tiro.y =    tiro.y0  + tiro.vel*tiro.forcay*tiro.tempo - 0.5*G*tiro.tempo*tiro.tempo;
-            tiro.z =    tiro.z0  + tiro.vel*tiro.forcaz*tiro.tempo /*+ tiro.ventoz*/;
-            tiro.ventox += intensidadeVentox;
-            tiro.ventoz += intensidadeVentoz;
+            tiro.z =    tiro.z0  + tiro.vel*tiro.forcaz*tiro.tempo + (-1)*ventoz*tiro.tempo;
+
             if(tiro.y <0.2)
             {
-                printf("ANGULO: %f VELOCIDADE: %f\n",tiro.anguloy,tiro.vel);
-                if(tiro.pulo == 0)
+                if(tiro.pulo == 0 && tiro.anguloy <= 0)
                 {
-                    tiro.anguloy = tiro.anguloy + M_PI_2;
+                    tiro.forcay = tiro.yAuxiliar;
                 }
                 tiro.x0 = tiro.x;
                 tiro.y0 = tiro.y;
@@ -673,18 +722,26 @@ void Timer(int value)
                 tiro.ventox = 0.0;
                 tiro.ventoz = 0.0;
                 tiro.vel = tiro.vel*0.9;
-                tiro.pulo ++; //Numero de Pulos
+                tiro.pulo++; //Numero de Pulos
                 tiro.tempo = 0.0;
             }
 
-            if (tiro.vel < 0.1)
+            if ((tiro.vel < 0.1 || tiro.z < -50 || tiro.x < -50 || tiro.x > 50) && tiro.y < 0.2)
             {
                 tiro.vis = false;
+                ventox = (2.0 - (-2.0)) * randomico() + (-2.0);
+                ventoz = (2.0 - (0.0)) * randomico() + (0.0);
+            }
+
+            float d0 = 1.2;
+            float d1 = sqrt(pow((d_x - tiro.x), 2) + pow((1.0 - tiro.y), 2) + pow((-d_z - tiro.z), 2));
+            if(d1 < d0)
+            {
+                alvovis = 0;
             }
         }
         tiro.tempo += 0.01;
     }
-
 
     glutTimerFunc(10,Timer,0);
     glutPostRedisplay();
@@ -718,3 +775,13 @@ int main(int argc, char** argv)
     glutMainLoop();
     return 0;
 }
+
+
+
+/* PARTICULAS - COLOCAR!!!
+VERIFICAR COR BARRA DE FORÇA
+VIEWPORT
+ANGULO BOLA QUICAR
+ESTADIO
+SOM
+CAMERA */

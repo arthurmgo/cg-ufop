@@ -159,43 +159,7 @@ void Inicializa(void)
     ventoz = (2.0 - (0.0)) * randomico() + (0.0);
 
 }
-/*
-//wavefront .obj loader code begins
-void loadObj()
-{
-    FILE *fp;
-    int read;
-    GLfloat x, y, z;
-    char ch;
-    cube=glGenLists(1);
-    fp=fopen("fggfdgfd.obj","r");
-    if (!fp)
-    {
-        printf("can't open file\n");
-        exit(1);
-    }
-    glPointSize(2.0);
-    glNewList(cube, GL_COMPILE);
-    {
-        glPushMatrix();
-        glTranslated(d_x, 0.0, -d_z);
-        glBegin(GL_POINTS);
-        while(!(feof(fp)))
-        {
-            read=fscanf(fp,"%c %f %f %f",&ch,&x,&y,&z);
-            if(read==4&&ch=='v')
-            {
-                glVertex3f(x,y,z);
-            }
-        }
-        glEnd();
-    }
-    glPopMatrix();
-    glEndList();
-    fclose(fp);
-}
-//wavefront .obj loader code ends here
-*/
+
 void ativaIluminacao (void)
 {
     GLfloat luzAmbiente[4]= {0.2,0.2,0.2,1.0};
@@ -505,9 +469,11 @@ void Alvo()
 
         glTranslated(d_x, 0.0, -d_z);
         glScaled(2.0, 4.0, 2.0);
-        glColor3f(0.0, 1.0, 1.0);
+        glEnable(GL_BLEND);
+        glColor4f(0.0, 1.0, 1.0,1.0);
 
         glutSolidCube(1);
+        glDisable(GL_BLEND);
 
         glPopMatrix();
     }
@@ -644,7 +610,6 @@ void Desenha(void)
 {
     glClearColor (0.52, 0.80, 0.98, 0.0);
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     gluLookAt(0,4,6, 0,3,0, 0,1,0);
@@ -667,7 +632,6 @@ void Desenha(void)
         Trajetoria();
     }
 
-    //if (alvovis == 0)
     desenhaParticulas();
 
     glColor3f(0.0, 0.0,0.0);

@@ -445,7 +445,10 @@ void Alvo()
     else if(alvovis == 0)
     {
 <<<<<<< HEAD
+<<<<<<< HEAD
         //PlaySound("C:\\temp\\sound_test.wav", NULL, SND_FILENAME);
+=======
+>>>>>>> 8041d447771e89dbb8d653697b47e657f6b3f19c
 =======
 >>>>>>> 8041d447771e89dbb8d653697b47e657f6b3f19c
         d_z = (25.0 * randomico()) + 25.0;
@@ -763,7 +766,10 @@ void Timer(int value)
                 alvovis = 0;
             }
 <<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8041d447771e89dbb8d653697b47e657f6b3f19c
 =======
 >>>>>>> 8041d447771e89dbb8d653697b47e657f6b3f19c
         }

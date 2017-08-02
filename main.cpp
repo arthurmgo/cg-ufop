@@ -458,7 +458,6 @@ void Alvo()
 void MarcadorForca()
 {
     glPushMatrix();
-    desativaIluminacao();
     glTranslated(5.0, 4.0, 0.0);
     glRotated(2.5, 0.0, 0.0, 1.0);
 
@@ -478,7 +477,6 @@ void MarcadorForca()
         glEnd();
     }
     glPopMatrix();
-    ativaIluminacao();
     glPopMatrix();
 }
 
@@ -486,8 +484,6 @@ void MarcadorForca()
 void GeraVento()
 {
     glPushMatrix();
-
-    desativaIluminacao();
 
     float v = sqrt(pow(ventox,2)+ pow(ventoz,2));
 
@@ -514,7 +510,6 @@ void GeraVento()
     glVertex3f(-0.1,0.5,0);
     glEnd();
 
-    ativaIluminacao();
     glPopMatrix();
 
 }

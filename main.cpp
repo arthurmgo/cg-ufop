@@ -495,18 +495,19 @@ void MarcadorForca()
     glTranslated(5.0, 4.0, 0.0);
     glRotated(2.5, 0.0, 0.0, 1.0);
 
-    if(forca <= 13)
-        glColor3f(forca/13, 1.0, 0.0);
-    else
-        glColor3f(1.0,(1.0 - forca/25), 0.0);
 
     glPushMatrix();
     for(int i = 0; i<n ; i++)
     {
         glBegin(GL_QUADS);
-        glVertex3f(0.5,0.1*n,0.0);
-        glVertex3f(0.5,0.0,0.0);
+        glColor3f(0.0, 1.0, 0.0);
+
         glVertex3f(0.0,0.0,0.0);
+        glVertex3f(0.5,0.0,0.0);
+
+        glColor3f(1.0, (1.0 - forca/25), 0.0);
+
+        glVertex3f(0.5,0.1*n,0.0);
         glVertex3f(0.0,0.1*n,0.0);
         glEnd();
     }

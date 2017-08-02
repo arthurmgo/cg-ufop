@@ -152,11 +152,11 @@
 
 1500787354 f:\cg-ufop\include\gl\freeglut_ext.h
 
-<<<<<<< HEAD
-1501621778 source:g:\cg-ufop\main.cpp
-=======
+1500787354 D
+
 1501212540 source:g:\cg-ufop\main.cpp
->>>>>>> 50095eae7502eddeab62357fea84fc7e8b829058
+
+1501212540 95eae7502eddeab62357fea84fc7e8b829058
 	<GL/gl.h>
 	<stdio.h>
 	<GL/glut.h>
@@ -178,4 +178,29 @@
 	<GL/glu.h>
 
 1500780154 g:\cg-ufop\include\gl\freeglut_ext.h
+
+1501646401 source:c:\users\mariane vieira\documents\github\cg-ufop\main.cpp
+	<GL/gl.h>
+	<stdio.h>
+	<GL/glut.h>
+	<stdlib.h>
+	<cmath>
+	<iostream>
+	<ctime>
+	<windows.h>
+	<mmsystem.h>
+
+1500780154 c:\users\mariane vieira\documents\github\cg-ufop\include\gl\glut.h
+	"freeglut.h"
+
+1500780154 c:\users\mariane vieira\documents\github\cg-ufop\include\gl\freeglut.h
+	"freeglut_std.h"
+	"freeglut_ext.h"
+
+1500780154 c:\users\mariane vieira\documents\github\cg-ufop\include\gl\freeglut_std.h
+	<windows.h>
+	<GL/gl.h>
+	<GL/glu.h>
+
+1500780154 c:\users\mariane vieira\documents\github\cg-ufop\include\gl\freeglut_ext.h
 

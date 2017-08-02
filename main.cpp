@@ -6,6 +6,7 @@
 #include <iostream>
 #include <ctime>
 #include <windows.h>
+#include <mmsystem.h>
 
 #define G 9.8
 #define randomico() ((float) rand()/ RAND_MAX) //Numero aleatório entre 0 e1
@@ -433,7 +434,6 @@ void Alvo()
     }
     else if(alvovis == 0)
     {
-        PlaySound("C:\\temp\\sound_test.wav", NULL, SND_FILENAME);
         d_z = (25.0 * randomico()) + 25.0;
         d_x = (40.0 - (-40.0)) * randomico() + (-40.0);
         alvovis = 1;
@@ -677,7 +677,7 @@ void Teclado(unsigned char key, int x, int y)
         tiro.ventoz = 0.0;
 
         tiro.pulo = 0;
-
+        PlaySound("C:\\bomba.wav", NULL, 1);
     }
     if (key == '+')
     {
@@ -730,6 +730,7 @@ void Timer(int value)
             if ((tiro.vel < 0.1 || tiro.z < -50 || tiro.x < -50 || tiro.x > 50) && tiro.y < 0.2)
             {
                 tiro.vis = false;
+                PlaySound("C:\\errou.wav", NULL, 1);
                 ventox = (2.0 - (-2.0)) * randomico() + (-2.0);
                 ventoz = (2.0 - (0.0)) * randomico() + (0.0);
             }
@@ -739,14 +740,6 @@ void Timer(int value)
             if(d1 < d0)
             {
                 alvovis = 0;
-            }
-
-            float d0 = 1.2;
-            float d1 = sqrt(pow((d_x - tiro.x), 2) + pow((1.0 - tiro.y), 2) + pow((-d_z - tiro.z), 2));
-            if(d1 < d0)
-            {
-                alvovis = 0;
-                //loadObj();
             }
         }
         tiro.tempo += 0.01;

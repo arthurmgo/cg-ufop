@@ -89,6 +89,7 @@ void Inicializa(void)
 
     ventox = (2.0 - (-2.0)) * randomico() + (-2.0);
     ventoz = (2.0 - (0.0)) * randomico() + (0.0);
+
 }
 /*
 //wavefront .obj loader code begins
@@ -445,8 +446,6 @@ void Alvo()
     }
     else if(alvovis == 0)
     {
-
-        PlaySound("C:\\temp\\sound_test.wav", NULL, SND_FILENAME);
         d_z = (25.0 * randomico()) + 25.0;
         d_x = (40.0 - (-40.0)) * randomico() + (-40.0);
         alvovis = 1;
@@ -762,7 +761,7 @@ void Timer(int value)
             if(d1 < d0)
             {
                 alvovis = 0;
-                PlaySound("sounds\\quebrando.wav", NULL, 1);
+                PlaySound("sounds\\quebrou.wav", NULL, 1);
                 cont++;
             }
 

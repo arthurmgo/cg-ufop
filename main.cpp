@@ -505,7 +505,7 @@ void MarcadorForca()
         glVertex3f(0.0,0.0,0.0);
         glVertex3f(0.5,0.0,0.0);
 
-        glColor3f(1.0, (1.0 - forca/25), 0.0);
+        glColor3f((forca/25), (1.0 - forca/25), 0.0);
 
         glVertex3f(0.5,0.1*n,0.0);
         glVertex3f(0.0,0.1*n,0.0);

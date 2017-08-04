@@ -95,8 +95,7 @@ void extinguirParticulas(int i)
     {
         Particulas[i].vis = false;
     }
-
-}/*Fim extinguirParticulas*/
+}
 
 void iniciaParticulas(void)
 {
@@ -104,8 +103,8 @@ void iniciaParticulas(void)
     {
         conceberParticulas(i);
         Particulas[i].vis = true;
-    }/*Fim do for*/
-}/*Fim Inicia Particulas*/
+    }
+}
 
 void desenhaParticulas(void)
 {
@@ -158,7 +157,9 @@ void Inicializa(void)
     ventox = (2.0 - (-2.0)) * randomico() + (-2.0);
     ventoz = (2.0 - (0.0)) * randomico() + (0.0);
 
+    angle = 45;
 }
+
 
 void ativaIluminacao (void)
 {
@@ -203,6 +204,42 @@ void desativaIluminacao(void)
     glDisable(GL_LIGHTING);
     glDisable(GL_LIGHT0);
     glDisable(GL_DEPTH_TEST);
+}
+
+// Função usada para especificar o volume de visualização
+void EspecificaParametrosVisualizacao(void)
+{
+	// Especifica sistema de coordenadas de projeção
+	glMatrixMode(GL_PROJECTION);
+	// Inicializa sistema de coordenadas de projeção
+	glLoadIdentity();
+
+	// Especifica a projeção perspectiva
+	gluPerspective(angle,fAspect,0.4,500);
+
+	// Especifica sistema de coordenadas do modelo
+	glMatrixMode(GL_MODELVIEW);
+	// Inicializa sistema de coordenadas do modelo
+	glLoadIdentity();
+
+	// Especifica posição do observador e do alvo
+	gluLookAt(0,80,200, 0,0,0, 0,1,0);
+}
+
+
+// Função callback chamada para gerenciar eventos do mouse
+void GerenciaMouse(int button, int state, int x, int y)
+{
+	if (button == GLUT_LEFT_BUTTON)
+		if (state == GLUT_DOWN) {  // Zoom-in
+			if (angle >= 10) angle -= 5;
+		}
+	if (button == GLUT_RIGHT_BUTTON)
+		if (state == GLUT_DOWN) {  // Zoom-out
+			if (angle <= 130) angle += 5;
+		}
+	EspecificaParametrosVisualizacao();
+	glutPostRedisplay();
 }
 
 
@@ -822,7 +859,7 @@ int main(int argc, char** argv)
     glutDisplayFunc(Desenha);
 
     ativaIluminacao();
-
+    glutMouseFunc(GerenciaMouse);
     glutReshapeFunc(AlteraTamanhoJanela);
 
     glutKeyboardFunc(Teclado);
@@ -834,8 +871,6 @@ int main(int argc, char** argv)
 
 
 /* PARTICULAS - COLOCAR!!!
-VERIFICAR COR BARRA DE FORÇA
 VIEWPORT
-ANGULO BOLA QUICAR
 ESTADIO
 CAMERA */
